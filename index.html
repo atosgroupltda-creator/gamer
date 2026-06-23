@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Lume Daily — Game Universe</title>
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#7B1B2A">
+  <meta name="description" content="Universo terapêutico gamificado da Clínica Lume.">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lume Daily">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--wine:#7B1B2A;--wine2:#4B0E1B;--wine3:#2B0711;--gold:#FFBE55;--gold2:#FFE5AE;--cream:#FFF8F0;--soft:#FFF2E2;--ink:#2C1B22;--muted:#8A727A;--green:#74B56C;--blue:#2F4E88;--pink:#F38CAB;--red:#D66B6B;--heart:#FF5A6E;--gem:#39B7E8;--panel-shadow:0 16px 34px rgba(78,22,38,.13);--hero-shadow:0 22px 48px rgba(58,16,29,.28)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent} html,body{margin:0;height:100%;overflow:hidden}
+    body{font-family:Inter,system-ui,sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 15% 0%, rgba(255,190,85,.18), transparent 28%),radial-gradient(circle at 85% 12%, rgba(243,140,171,.14), transparent 22%),linear-gradient(180deg,#14040A 0%, #090306 100%)}
+    body:before,body:after{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,255,255,.4) 1px,transparent 1.4px),radial-gradient(circle,rgba(255,209,112,.28) 1px,transparent 1.7px);background-size:150px 150px,220px 220px;background-position:0 0,50px 70px;opacity:.28;animation:stars 28s linear infinite} body:after{opacity:.14;animation-duration:42s;transform:scale(1.2)} @keyframes stars{to{background-position:0 160px,50px 250px}}
+    .phone{width:min(430px,100%);height:min(920px,100vh);background:linear-gradient(180deg,#fffdf9 0%, #fff4ea 100%);border-radius:42px;box-shadow:0 32px 80px rgba(0,0,0,.48);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.18)}
+    @media(max-width:480px){body{background:#fffdf9}body:before,body:after{display:none}.phone{width:100%;height:100vh;border-radius:0;box-shadow:none;border:none}.notch{display:none}}
+    .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:140px;height:28px;border-radius:0 0 18px 18px;background:#18040A;z-index:60}
+    .screen{display:none;height:100%;overflow-y:auto;padding:22px 18px 112px;position:relative;-ms-overflow-style:none;scrollbar-width:none}.screen::-webkit-scrollbar{display:none}.screen.active{display:block;animation:screenIn .28s ease-out}@keyframes screenIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .screen.noscroll{overflow:hidden}
+    .brand{font-family:"Baloo 2",system-ui,sans-serif} h1,h2,h3,p{margin:0}.title{font-family:"Baloo 2";font-size:31px;line-height:1;font-weight:800}.big-title{font-family:"Baloo 2";font-size:48px;line-height:.9;font-weight:800}.sub{font-size:14px;color:var(--muted);line-height:1.45;margin-top:6px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:#FFF0DA;color:#9A631A;font-size:12px;font-weight:900;box-shadow:inset 0 0 0 1px rgba(255,190,85,.18)}.chip.dark{background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(255,255,255,.12)}
+    .panel{background:var(--cream);border-radius:28px;padding:16px;box-shadow:var(--panel-shadow)} .floating{animation:float 4s ease-in-out infinite}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+    .icon-btn{width:42px;height:42px;border:none;border-radius:16px;background:#FFF0DE;color:var(--wine);font-size:18px;font-weight:900;display:grid;place-items:center;cursor:pointer;transition:.14s ease}.icon-btn:active{transform:scale(.92)}
+    .btn{width:100%;border:none;border-radius:18px;padding:16px 18px;font-weight:900;cursor:pointer;background:linear-gradient(180deg,#FFD376,#FFB23E);color:#5F320D;box-shadow:0 10px 24px rgba(255,176,60,.34);transition:.15s ease}.btn:hover{transform:translateY(-1px)}.btn:active{transform:scale(.98)}.btn.dark{background:linear-gradient(180deg,var(--wine),var(--wine2));color:#fff;box-shadow:0 10px 24px rgba(123,27,42,.28)}.btn.secondary{background:#fff4e8;color:var(--wine);box-shadow:none;border:1px solid #F0DDCA}.btn.small{padding:11px 13px;border-radius:14px;font-size:13px}.btn[disabled]{opacity:.45;pointer-events:none}
+    .hero,.gameplay-hero,.rank-card{position:relative;overflow:hidden;border-radius:32px;color:#fff;padding:18px;background:radial-gradient(circle at 85% 12%, rgba(255,211,116,.36), transparent 28%),radial-gradient(circle at 18% 120%, rgba(255,255,255,.12), transparent 26%),linear-gradient(180deg,#7B1B2A 0%,#3C0E1C 100%);box-shadow:var(--hero-shadow)} .rank-card{background:linear-gradient(180deg,#243F6E 0%,#18294A 100%)} .hero:after,.gameplay-hero:after,.rank-card:after{content:"";position:absolute;right:-40px;top:-40px;width:150px;height:150px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 60%);animation:glow 3.8s ease-in-out infinite}@keyframes glow{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.12);opacity:1}}
+    .sparkles{position:absolute;inset:0;pointer-events:none}.sparkles span{position:absolute;width:6px;height:6px;border-radius:99px;background:#fff;opacity:.7;box-shadow:0 0 12px rgba(255,255,255,.85);animation:spark 2.8s ease-in-out infinite}.sparkles span:nth-child(1){top:20px;right:34px;animation-delay:.1s}.sparkles span:nth-child(2){top:54px;right:95px;animation-delay:.8s}.sparkles span:nth-child(3){top:110px;right:50px;animation-delay:1.4s}.sparkles span:nth-child(4){top:80px;left:24px;animation-delay:2s}@keyframes spark{0%,100%{transform:scale(.4);opacity:.4}50%{transform:scale(1.25);opacity:1}}
+    /* ===== Lumi mascote ===== */
+    .lumi{width:110px;height:124px;position:absolute;right:2px;bottom:-6px;filter:drop-shadow(0 16px 20px rgba(255,180,68,.24));transform:scale(.72)} .lumi .top{position:absolute;top:0;left:50%;transform:translateX(-50%);width:56px;height:68px;clip-path:polygon(50% 0,78% 24%,94% 58%,72% 100%,28% 100%,6% 58%,22% 24%);background:radial-gradient(circle at 50% 35%, #fff8cc 0, #ffd765 35%, #ffb23c 70%, #ff8f2f 100%);animation:flame 1.75s ease-in-out infinite}.lumi .body{position:absolute;left:13px;right:13px;bottom:0;top:25px;border-radius:56% 56% 46% 46% / 70% 70% 34% 34%;background:radial-gradient(circle at 50% 35%, #fff8d5 0,#ffd76c 28%,#ffb23f 62%,#ff9530 100%);animation:wobble 2.4s ease-in-out infinite}.lumi .eye{position:absolute;top:62px;width:9px;height:13px;border-radius:10px;background:#5A2E17}.lumi .eye.l{left:37px}.lumi .eye.r{right:37px}.lumi .mouth{position:absolute;top:81px;left:50%;transform:translateX(-50%);width:24px;height:12px;border:3px solid #7A431B;border-top:none;border-radius:0 0 18px 18px}@keyframes flame{50%{transform:translateX(-50%) scale(1.06) translateY(-3px)}}@keyframes wobble{50%{transform:translateY(-3px)}}
+    .lumi.happy .mouth{height:16px;border-width:4px}.lumi.sad .mouth{top:88px;border-top:3px solid #7A431B;border-bottom:none;border-radius:18px 18px 0 0;height:9px}
+    .mini-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}.mini-stat{background:#fff;border-radius:22px;padding:13px;box-shadow:0 8px 18px rgba(66,20,34,.06)}.mini-stat b{font-size:26px;color:var(--wine);display:block}.mini-stat .tiny{font-size:12px;color:var(--muted)}
+    .topbar{padding-top:18px;margin-bottom:14px}
+    /* ===== Top resource bar (vidas/gemas/streak) ===== */
+    .resbar{display:flex;align-items:center;gap:8px;padding-top:16px;margin-bottom:12px}
+    .res{display:inline-flex;align-items:center;gap:5px;padding:7px 11px;border-radius:999px;background:#fff;box-shadow:0 6px 14px rgba(66,20,34,.08);font-weight:900;font-size:14px;color:var(--ink)}
+    .res .ic{font-size:16px}.res.streak{color:#E06A1B}.res.heart{color:var(--heart)}.res.gem{color:var(--gem)}
+    .res.pulse{animation:resPulse .5s ease}@keyframes resPulse{0%,100%{transform:scale(1)}40%{transform:scale(1.22)}}
+    /* ===== Bottom nav ===== */
+    .nav{position:absolute;left:12px;right:12px;bottom:12px;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:9px;border-radius:24px;background:rgba(255,250,244,.96);backdrop-filter:blur(14px);box-shadow:0 12px 30px rgba(58,20,31,.18)}.nav button{border:none;background:transparent;border-radius:17px;padding:8px 2px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:var(--muted);font-weight:900;cursor:pointer}.nav button.active{background:#FFF0DE;color:var(--wine)}.nav i{font-style:normal;font-size:17px}
+    .nav.hidden{display:none}
+    .option{display:flex;align-items:center;gap:12px;width:100%;border:2px solid #EEDCCB;background:#fff;border-radius:22px;padding:11px;text-align:left;margin-top:10px;transition:all .18s ease;cursor:pointer;box-shadow:0 7px 16px rgba(82,37,45,.05)}.option:hover{transform:translateY(-1px)}.option.selected{border-color:#F2A735;background:#FFF6E1}.option.good{border-color:#82B76D;background:#F0FAEA}.option.bad{border-color:#E68A8A;background:#FFF0F0}.visual{width:58px;height:58px;border-radius:18px;background:linear-gradient(180deg,#FFF3D6,#FFE2A8);display:grid;place-items:center;font-size:28px;flex:0 0 58px}.opt-title{font-weight:900;color:var(--ink)}.opt-sub{font-size:12px;color:var(--muted);line-height:1.3;margin-top:3px}
+    .progress{height:10px;background:#F0DDCE;border-radius:999px;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,#FFCE6D,#FFAA35);border-radius:999px;transition:width .35s ease}
+    .theme-grid{display:grid;gap:12px;margin-top:14px}.theme-card{background:#fff;border:2px solid #F0DDCD;border-radius:28px;padding:16px;box-shadow:var(--panel-shadow);cursor:pointer;position:relative;overflow:hidden;transition:.16s ease}.theme-card:hover{transform:translateY(-1px)}.theme-card.locked{opacity:.46;filter:grayscale(.7)}.theme-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.theme-icon{width:56px;height:56px;border-radius:18px;background:linear-gradient(180deg,#FFF0DA,#FFE5AF);display:grid;place-items:center;font-size:28px;box-shadow:inset 0 0 0 1px rgba(255,190,85,.25)}.theme-title{font-family:"Baloo 2";font-size:28px;line-height:.95;color:var(--wine)}.theme-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.tiny-chip{display:inline-flex;padding:5px 8px;border-radius:999px;background:#FFF0DE;color:#9A601D;font-size:10px;font-weight:900}.theme-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}.orb{position:absolute;right:-26px;bottom:-24px;width:96px;height:96px;border-radius:50%;background:radial-gradient(circle,rgba(255,209,117,.35),transparent 70%)}
+    .rank-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:18px;background:rgba(255,255,255,.07);margin-top:8px}.rank-row.me{background:rgba(255,190,85,.16);border:1px solid rgba(255,190,85,.3)} .league{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);font-weight:900;font-size:12px}
+    .quest-card,.reward-card{background:#fff;border-radius:24px;padding:14px;box-shadow:var(--panel-shadow);border:2px solid #F0DDCD}.quest-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;background:#FFF8EF;border-radius:18px;padding:12px}.chest{width:68px;height:68px;border-radius:20px;background:linear-gradient(180deg,#FFDE91,#FFB649);display:grid;place-items:center;font-size:32px;box-shadow:0 12px 24px rgba(255,182,73,.26);animation:chestPulse 2.6s ease-in-out infinite}@keyframes chestPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+    .game-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.game-card{background:#fff;border:2px solid #F0DDCD;border-radius:24px;padding:14px;box-shadow:var(--panel-shadow);position:relative;overflow:hidden;cursor:pointer;min-height:172px;transition:.16s ease}.game-card:hover{transform:translateY(-1px)}.game-card.locked{opacity:.45;filter:grayscale(.7)}.game-icon{width:52px;height:52px;border-radius:18px;background:linear-gradient(180deg,#FFF0D8,#FFE3A8);display:grid;place-items:center;font-size:26px}.game-title{font-weight:900;color:var(--wine);margin-top:9px;font-size:15px;line-height:1.1}.game-desc{font-size:12px;color:var(--muted);line-height:1.3;margin-top:5px}.game-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}.xp-pill{background:#FFF3E0;color:#945E17;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:900}.rarity{font-size:10px;font-weight:900;color:#7B1B2A}.game-glow{position:absolute;right:-20px;bottom:-24px;width:88px;height:88px;border-radius:50%;background:radial-gradient(circle,rgba(255,213,126,.35),transparent 65%)}
+    .gameplay-area{margin-top:14px}.feedback{display:none;margin-top:14px;background:#FFF2E0;border-radius:22px;padding:14px;font-size:14px;color:#6D4B3D;line-height:1.48;border:1px solid #F1D8BE}.feedback.show{display:block;animation:screenIn .22s ease}.truth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.truth-btn{min-height:118px;border:none;border-radius:24px;font-size:22px;font-weight:900;cursor:pointer;box-shadow:var(--panel-shadow)}.truth-btn.true{background:#F0FAEA;color:#3D6A32}.truth-btn.myth{background:#FFF0F0;color:#8A3737}
+    .hang-word{font-size:32px;letter-spacing:8px;text-align:center;font-weight:900;color:var(--wine);margin:16px 0}.hang-letters{display:flex;flex-wrap:wrap;gap:7px;justify-content:center}.hang-btn{width:34px;height:34px;border-radius:12px;border:2px solid #EEDCCB;background:#fff;font-weight:900;color:var(--wine);cursor:pointer}.hang-btn.used{opacity:.35}.hang-emoji{text-align:center;font-size:42px;margin-top:8px}
+    .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.match-card{border:2px solid #EEDCCB;background:#fff;border-radius:18px;padding:12px;min-height:84px;font-size:13px;font-weight:800;color:var(--ink);cursor:pointer}.match-card.sel{border-color:#F2A735;background:#FFF6E1}.match-card.done{border-color:#82B76D;background:#F0FAEA;color:#3D6A32}
+    .sequence-list{display:grid;gap:8px;margin-top:14px}.seq-item{background:#fff;border:2px solid #EEDCCB;border-radius:18px;padding:13px;font-weight:800;color:var(--ink);display:flex;justify-content:space-between;align-items:center}.seq-controls{display:flex;gap:6px}.seq-controls button{width:34px;height:32px;border:none;border-radius:10px;background:#FFF0DE;color:var(--wine);font-weight:900;cursor:pointer}
+    .thermo-row{background:#fff;border:2px solid #EEDCCB;border-radius:20px;padding:13px;margin-top:10px}.thermo-top{display:flex;justify-content:space-between;align-items:center;font-weight:900;color:var(--wine)} input[type=range]{width:100%;accent-color:#D48B29}
+    .card-builder{display:grid;gap:12px;margin-top:14px}.build-slot{background:#fff;border:2px solid #EEDCCB;border-radius:20px;padding:12px}.slot-title{font-size:12px;font-weight:900;color:var(--wine);text-transform:uppercase}.choice-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}.choice-pill{border:none;border-radius:999px;background:#FFF0DE;color:#7B4E3B;padding:9px 11px;font-size:12px;font-weight:800;cursor:pointer}.choice-pill.selected{background:var(--wine);color:#fff}
+    .dialogue-phone{background:#fff;border:2px solid #EEDCCB;border-radius:24px;padding:14px;margin-top:14px}.bubble{max-width:85%;padding:10px 12px;border-radius:18px;margin:8px 0;font-size:13px;line-height:1.35}.bubble.other{background:#F0E2D5;color:#5E454C}.bubble.me{background:#7B1B2A;color:#fff;margin-left:auto}
+    .word-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-top:14px}.letter{aspect-ratio:1;border:none;border-radius:10px;background:#fff;border:2px solid #EEDCCB;font-weight:900;color:var(--wine);cursor:pointer}.letter.sel{background:#FFF0DE;border-color:var(--gold)}.word-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.word-pill{border-radius:99px;background:#FFF0DE;color:#80533E;font-size:12px;font-weight:900;padding:7px 10px}.word-pill.done{background:#EAF8E7;color:#3D6A32;text-decoration:line-through}
+    .plan-card{background:#fff;border:2px solid #EEDCCB;border-radius:26px;padding:16px;margin-top:12px;box-shadow:var(--panel-shadow);position:relative;overflow:hidden}.plan-card.selected{border-color:#FFBE55;background:#FFF8E8}.plan-title{font-family:"Baloo 2";font-size:27px;line-height:1;color:var(--wine);font-weight:800}.plan-price{font-size:28px;font-weight:900;color:var(--ink)}.plan-list{display:grid;gap:8px;margin-top:12px}.plan-list div{font-size:13px;color:#6D535A;font-weight:700}
+    .medal{background:#fff;border-radius:20px;padding:12px;display:flex;align-items:center;gap:10px;box-shadow:0 7px 16px rgba(65,25,35,.06);margin-top:8px}.medal i{font-style:normal;font-size:28px}.medal.locked{opacity:.45;filter:grayscale(.6)}
+    .analysis-screen,.star-result-screen,.payment-screen,.splash-screen,.login-screen,.daily-intro-screen,.levelup-screen{background:radial-gradient(ellipse at 50% 0%,#560E1A 0%,#180910 58%,#0D0407 100%);color:#fff;overflow:hidden}.analysis-wrap,.result-wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:42px 20px 98px}.analysis-ill{font-size:76px;animation:analysisPulse 1.45s ease-in-out infinite;filter:drop-shadow(0 14px 24px rgba(255,190,85,.30))}@keyframes analysisPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}.analysis-bar-wrap{width:100%;max-width:320px;background:rgba(255,255,255,.08);border-radius:999px;height:10px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}.analysis-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--wine),var(--gold));border-radius:999px;transition:width .42s ease}.analysis-lbl{font-size:12px;color:rgba(253,246,236,.58);font-weight:800}
+    .res-big{font-size:88px;animation:resPop .7s cubic-bezier(.34,1.56,.64,1);filter:drop-shadow(0 14px 25px rgba(255,190,85,.24))}@keyframes resPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}.res-title{font-size:29px;font-weight:900;color:var(--gold);line-height:1.05}.res-stars{font-size:42px;letter-spacing:4px;min-height:54px}.res-stars span{display:inline-block;opacity:0;transform:scale(0) rotate(-18deg);animation:starIn .52s cubic-bezier(.34,1.56,.64,1) forwards}.res-stars span:nth-child(1){animation-delay:.1s}.res-stars span:nth-child(2){animation-delay:.24s}.res-stars span:nth-child(3){animation-delay:.38s}.res-stars span:nth-child(4){animation-delay:.52s}.res-stars span:nth-child(5){animation-delay:.66s}@keyframes starIn{to{opacity:1;transform:scale(1) rotate(0deg)}}.res-xp{background:rgba(201,168,76,.12);border:1.5px solid rgba(201,168,76,.38);border-radius:999px;padding:12px 30px;font-size:22px;font-weight:900;color:var(--gold)}.res-insight{width:100%;max-width:330px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:16px 18px;text-align:left}.res-insight-label{font-size:11px;font-weight:900;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}.res-insight-text{font-size:14px;color:rgba(253,246,236,.78);line-height:1.6}
+    .res-rewards{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.rwd{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:10px 14px;font-weight:900;display:flex;align-items:center;gap:6px;font-size:15px;animation:resPop .5s cubic-bezier(.34,1.56,.64,1) both}.rwd:nth-child(2){animation-delay:.12s}.rwd:nth-child(3){animation-delay:.24s}
+    .cf-layer{position:absolute;inset:0;pointer-events:none;z-index:80;overflow:hidden;border-radius:inherit}.cf{position:absolute;border-radius:3px;opacity:0;animation:cff linear both}@keyframes cff{0%{opacity:1;transform:translateY(-16px) rotate(0deg)}100%{opacity:0;transform:translateY(930px) rotate(720deg)}}
+    .disclaimer{font-size:11px;line-height:1.4;color:#9B858A;background:#fff7ec;border:1px solid #F0DDCB;padding:11px;border-radius:16px;margin-top:12px}
+
+    /* ===== NOVO: SPLASH cinematográfico ===== */
+    #splash{display:none;align-items:center;justify-content:center;text-align:center}
+    #splash.active{display:flex;flex-direction:column}
+    .splash-stage{min-height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:30px}
+    .splash-halo{position:absolute;top:34%;left:50%;width:280px;height:280px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,190,85,.42),rgba(255,120,60,.12) 45%,transparent 70%);filter:blur(4px);animation:haloPulse 3s ease-in-out infinite}@keyframes haloPulse{0%,100%{transform:translate(-50%,-50%) scale(.85);opacity:.55}50%{transform:translate(-50%,-50%) scale(1.1);opacity:1}}
+    .splash-lumi{position:relative;width:120px;height:140px;transform:scale(1);animation:lumiRise 1.4s cubic-bezier(.34,1.4,.5,1) both}
+    @keyframes lumiRise{0%{transform:translateY(60px) scale(.2);opacity:0}60%{opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
+    .splash-lumi .top{position:absolute;top:0;left:50%;transform:translateX(-50%);width:62px;height:76px;clip-path:polygon(50% 0,78% 24%,94% 58%,72% 100%,28% 100%,6% 58%,22% 24%);background:radial-gradient(circle at 50% 35%, #fff8cc 0, #ffd765 35%, #ffb23c 70%, #ff8f2f 100%);animation:flame 1.6s ease-in-out infinite}
+    .splash-lumi .body{position:absolute;left:14px;right:14px;bottom:0;top:28px;border-radius:56% 56% 46% 46% / 70% 70% 34% 34%;background:radial-gradient(circle at 50% 35%, #fff8d5 0,#ffd76c 28%,#ffb23f 62%,#ff9530 100%);animation:wobble 2.4s ease-in-out infinite}
+    .splash-lumi .eye{position:absolute;top:70px;width:10px;height:14px;border-radius:10px;background:#5A2E17}.splash-lumi .eye.l{left:41px}.splash-lumi .eye.r{right:41px}.splash-lumi .mouth{position:absolute;top:91px;left:50%;transform:translateX(-50%);width:26px;height:14px;border:3px solid #7A431B;border-top:none;border-radius:0 0 18px 18px}
+    .splash-name{font-family:"Baloo 2";font-size:54px;line-height:.88;font-weight:800;color:#fff;margin-top:24px;opacity:0;animation:fadeUp .7s ease .9s both;text-shadow:0 6px 30px rgba(255,170,60,.4)}
+    .splash-name span{color:var(--gold)}
+    .splash-tag{color:rgba(255,255,255,.72);font-weight:700;letter-spacing:2px;font-size:12px;text-transform:uppercase;margin-top:10px;opacity:0;animation:fadeUp .7s ease 1.3s both}
+    .splash-load{margin-top:30px;width:140px;height:5px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;opacity:0;animation:fadeUp .6s ease 1.5s both}
+    .splash-load span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#FF8F2F);border-radius:999px;animation:loadFill 1.6s ease 1.6s forwards}@keyframes loadFill{to{width:100%}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ===== NOVO: START / LOGIN ===== */
+    .start-wrap{min-height:100%;display:flex;flex-direction:column;justify-content:space-between;text-align:center;padding:36px 24px 40px}
+    .start-logo{font-family:"Baloo 2";font-size:46px;font-weight:800;color:#fff;line-height:.9;margin-top:24px}.start-logo span{color:var(--gold)}
+    .start-lumi-wrap{flex:1;display:flex;align-items:center;justify-content:center;position:relative}
+    .start-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:26px;padding:22px}
+    .input{width:100%;border:2px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);border-radius:16px;padding:15px 16px;color:#fff;font-size:15px;font-weight:700;font-family:Inter;outline:none;margin-top:10px}.input::placeholder{color:rgba(255,255,255,.4)}.input:focus{border-color:var(--gold)}
+    .login-tab{display:flex;background:rgba(255,255,255,.06);border-radius:14px;padding:4px;margin-bottom:6px}.login-tab button{flex:1;border:none;background:transparent;color:rgba(255,255,255,.6);font-weight:900;padding:10px;border-radius:11px;cursor:pointer;font-size:13px}.login-tab button.on{background:var(--gold);color:#5F320D}
+    .social-btn{width:100%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#fff;border-radius:14px;padding:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;font-size:14px;margin-top:9px}
+
+    /* ===== NOVO: HOME modos ===== */
+    .mode-card{position:relative;overflow:hidden;border-radius:28px;padding:18px;color:#fff;cursor:pointer;box-shadow:var(--hero-shadow);transition:.16s ease}.mode-card:active{transform:scale(.985)}
+    .mode-daily{background:radial-gradient(circle at 80% 10%,rgba(255,211,116,.4),transparent 36%),linear-gradient(150deg,#7B1B2A,#3C0E1C)}
+    .mode-free{background:radial-gradient(circle at 80% 10%,rgba(120,200,255,.34),transparent 36%),linear-gradient(150deg,#243F6E,#15233f)}
+    .mode-card .mc-icon{font-size:34px}.mode-card .mc-title{font-family:"Baloo 2";font-size:30px;line-height:.95;margin-top:8px}.mode-card .mc-sub{color:rgba(255,255,255,.82);font-size:13px;line-height:1.4;margin-top:6px;max-width:240px}
+    .mode-card .mc-cta{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.18);padding:9px 14px;border-radius:999px;font-weight:900;font-size:13px}
+    .mode-card .mc-art{position:absolute;right:-10px;bottom:-18px;font-size:96px;opacity:.16;transform:rotate(-8deg)}
+    .daily-ring{position:absolute;right:16px;top:16px;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:12px;background:conic-gradient(var(--gold) var(--pct,0%),rgba(255,255,255,.14) 0);}
+    .daily-ring .inner{width:44px;height:44px;border-radius:50%;background:#5b1320;display:grid;place-items:center;font-size:11px;line-height:1;text-align:center}
+
+    /* ===== NOVO: STREAK / OFENSIVA calendário ===== */
+    .streak-cal{display:flex;justify-content:space-between;gap:6px;margin-top:14px}
+    .streak-day{flex:1;text-align:center}.streak-day .dot{width:34px;height:34px;border-radius:50%;margin:0 auto 5px;display:grid;place-items:center;font-size:16px;background:#F0DDCE;color:#B79A86}.streak-day.on .dot{background:linear-gradient(180deg,#FFB23E,#FF7A2F);color:#fff;box-shadow:0 6px 14px rgba(255,122,47,.34)}.streak-day .lbl{font-size:10px;font-weight:900;color:var(--muted)}.streak-day.today .lbl{color:var(--wine)}
+
+    /* ===== NOVO: MAPA DE TRILHA ===== */
+    #trail.active{display:flex;flex-direction:column}
+    .trail-head{padding:16px 18px 12px;position:sticky;top:0;z-index:20;background:linear-gradient(180deg,var(--wine) 0%,var(--wine2) 100%);color:#fff;border-radius:0 0 26px 26px;box-shadow:0 12px 28px rgba(60,14,28,.4);margin:-22px -18px 0}
+    .trail-scroll{flex:1;overflow-y:auto;padding:18px 0 120px;-ms-overflow-style:none;scrollbar-width:none}.trail-scroll::-webkit-scrollbar{display:none}
+    .trail{position:relative;width:100%;padding:10px 0}
+    .node{position:relative;width:74px;height:74px;margin:0 auto;display:grid;place-items:center;cursor:pointer}
+    .node-disc{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;font-size:28px;position:relative;transition:.16s ease;box-shadow:0 8px 0 rgba(0,0,0,.12),0 12px 22px rgba(80,30,40,.18)}
+    .node.done .node-disc{background:linear-gradient(180deg,#8FD27F,#5FA94F);color:#fff;box-shadow:0 7px 0 #3f7d34,0 12px 22px rgba(80,150,60,.3)}
+    .node.current .node-disc{background:linear-gradient(180deg,#FFD27A,#FFAE3C);color:#5F320D;box-shadow:0 7px 0 #d98a25,0 0 0 5px rgba(255,190,85,.32),0 12px 24px rgba(255,150,50,.4);animation:nodeBounce 1.7s ease-in-out infinite}
+    .node.locked .node-disc{background:#EBDccb;color:#B79A86;box-shadow:0 6px 0 #cdb8a3}
+    @keyframes nodeBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    .node:active .node-disc{transform:scale(.94)}
+    .node .node-stars{position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:-1px;white-space:nowrap}
+    .node.current:after{content:"COMECE";position:absolute;top:-26px;left:50%;transform:translateX(-50%);background:#fff;color:var(--wine);font-size:9px;font-weight:900;padding:4px 9px;border-radius:999px;box-shadow:0 4px 10px rgba(80,30,40,.2);white-space:nowrap;animation:nodeBounce 1.7s ease-in-out infinite}
+    .node-boss .node-disc{width:78px;height:78px;font-size:34px}
+    .trail-sep{display:flex;align-items:center;gap:10px;margin:18px 26px;color:var(--wine);font-weight:900;font-size:12px;opacity:.8}.trail-sep:before,.trail-sep:after{content:"";flex:1;height:2px;background:repeating-linear-gradient(90deg,#E7CDB8 0 6px,transparent 6px 12px)}
+
+    /* ===== NOVO: BAÚ / CHEST OPEN ===== */
+    .chest-screen{background:radial-gradient(ellipse at 50% 30%,#5b1320 0%,#180910 60%,#0D0407 100%)}
+    .chest-big{font-size:110px;cursor:pointer;animation:chestShake 1.4s ease-in-out infinite;filter:drop-shadow(0 18px 30px rgba(255,180,60,.34))}.chest-big.open{animation:chestPop .5s ease both}@keyframes chestShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}@keyframes chestPop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
+    .chest-rays{position:absolute;top:26%;left:50%;width:300px;height:300px;transform:translate(-50%,-50%) scale(0);background:conic-gradient(from 0deg,transparent 0 8deg,rgba(255,210,120,.5) 8deg 14deg,transparent 14deg 26deg);border-radius:50%;animation:rays 6s linear infinite;opacity:0}.chest-rays.show{opacity:1;transform:translate(-50%,-50%) scale(1);transition:.5s ease}@keyframes rays{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+    /* ===== NOVO: LEVEL UP ===== */
+    .levelup-screen .result-wrap{gap:18px}
+    .level-badge{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 50% 30%,#FFE3A3,#FFB23E 60%,#E08423);box-shadow:0 0 0 8px rgba(255,190,85,.22),0 18px 40px rgba(255,150,50,.4);animation:resPop .6s cubic-bezier(.34,1.56,.64,1);position:relative}
+    .level-badge b{font-family:"Baloo 2";font-size:64px;color:#5F320D;line-height:1}
+
+    /* ===== NOVO: heart-loss flash & toast ===== */
+    .toast{position:absolute;left:50%;top:74px;transform:translateX(-50%) translateY(-12px);background:rgba(40,12,20,.92);color:#fff;font-weight:800;font-size:13px;padding:10px 16px;border-radius:14px;z-index:90;opacity:0;pointer-events:none;display:flex;align-items:center;gap:8px;box-shadow:0 10px 26px rgba(0,0,0,.3)}.toast.show{animation:toastIn 2.2s ease forwards}@keyframes toastIn{0%{opacity:0;transform:translateX(-50%) translateY(-12px)}12%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-8px)}}
+    .combo-flash{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) scale(0);font-family:"Baloo 2";font-weight:800;font-size:40px;color:var(--gold);text-shadow:0 4px 20px rgba(255,150,50,.6);z-index:85;pointer-events:none}.combo-flash.show{animation:comboPop .9s ease forwards}@keyframes comboPop{0%{transform:translate(-50%,-50%) scale(0) rotate(-10deg);opacity:0}30%{transform:translate(-50%,-50%) scale(1.2) rotate(4deg);opacity:1}70%{transform:translate(-50%,-50%) scale(1) rotate(0);opacity:1}100%{transform:translate(-50%,-50%) scale(1.1);opacity:0}}
+
+    /* ===== NOVO: out-of-hearts modal ===== */
+    .modal-back{position:absolute;inset:0;background:rgba(20,6,12,.7);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center;padding:24px}.modal-back.show{display:flex;animation:screenIn .25s ease}
+    .modal{background:#fff;border-radius:28px;padding:24px;text-align:center;width:100%;max-width:330px;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+    .modal .m-emoji{font-size:60px}.modal h3{font-family:"Baloo 2";font-size:28px;color:var(--wine);margin-top:8px}
+  </style>
+</head>
+<body>
+<div class="phone"><div class="notch"></div>
+<div id="toast" class="toast"></div>
+<div id="comboFlash" class="combo-flash"></div>
+<!-- ===== SPLASH cinematográfico ===== -->
+<section id="splash" class="screen splash-screen active noscroll">
+  <div class="splash-stage">
+    <div class="splash-halo"></div>
+    <div class="splash-lumi"><div class="top"></div><div class="body"></div><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div>
+    <div class="splash-name">Lume<br><span>Daily</span></div>
+    <div class="splash-tag">universo terapêutico gamificado</div>
+    <div class="splash-load"><span></span></div>
+  </div>
+</section>
+
+<!-- ===== START / boas-vindas ===== -->
+<section id="start" class="screen login-screen noscroll">
+  <div class="start-wrap">
+    <div>
+      <div class="chip dark" style="margin:0 auto">🎮 game universe</div>
+      <div class="start-logo">Lume <span>Daily</span></div>
+      <p style="color:rgba(255,255,255,.78);line-height:1.5;margin-top:12px;max-width:300px;margin-left:auto;margin-right:auto">Aprenda sobre relacionamentos, emoções e a si mesma jogando todos os dias.</p>
+    </div>
+    <div class="start-lumi-wrap">
+      <div class="splash-halo" style="top:50%"></div>
+      <div class="splash-lumi" style="animation:none"><div class="top"></div><div class="body"></div><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div>
+    </div>
+    <div>
+      <button class="btn" onclick="go('login')">Começar agora</button>
+      <button class="btn secondary" style="margin-top:10px;background:rgba(255,255,255,.07);color:#fff;border-color:rgba(255,255,255,.14)" onclick="go('login')">Já tenho conta</button>
+      <div class="disclaimer" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);color:rgba(255,255,255,.6);margin-top:16px">Experiência de psicoeducação gamificada. Não substitui psicoterapia.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LOGIN (visual) ===== -->
+<section id="login" class="screen login-screen noscroll">
+  <div class="start-wrap" style="justify-content:center;gap:18px">
+    <button class="icon-btn" style="position:absolute;left:18px;top:24px;background:rgba(255,255,255,.1);color:#fff" onclick="go('start')">←</button>
+    <div class="splash-lumi" style="width:80px;height:96px;margin:0 auto;animation:none;transform:scale(.9)"><div class="top"></div><div class="body"></div><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div>
+    <div class="start-card">
+      <div class="login-tab"><button id="tabLogin" class="on" onclick="setAuthTab('login')">Entrar</button><button id="tabSignup" onclick="setAuthTab('signup')">Criar conta</button></div>
+      <div id="signupName" style="display:none"><input class="input" id="inpName" placeholder="Seu primeiro nome"></div>
+      <input class="input" id="inpEmail" placeholder="seu@email.com">
+      <input class="input" id="inpPass" type="password" placeholder="Senha">
+      <button class="btn" style="margin-top:14px" id="authBtn" onclick="doAuth()">Entrar</button>
+      <div style="display:flex;align-items:center;gap:10px;margin:14px 0;color:rgba(255,255,255,.4);font-size:11px;font-weight:800"><div style="flex:1;height:1px;background:rgba(255,255,255,.12)"></div>OU<div style="flex:1;height:1px;background:rgba(255,255,255,.12)"></div></div>
+      <button class="social-btn" onclick="socialLogin()"><span style="font-size:16px">🌐</span> Continuar com Google</button>
+      <button class="social-btn" onclick="socialLogin()"><span style="font-size:16px"></span> Continuar com Apple</button>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.5);text-align:center;line-height:1.4">Login simulado — seus dados ficam salvos só neste dispositivo.</div>
+  </div>
+</section>
+
+<!-- ===== INTAKE / triagem ===== -->
+<section id="intake" class="screen"><div class="topbar"><div class="row"><button class="icon-btn" onclick="go('start')">←</button><div style="flex:1"><div class="progress"><span id="intakeBar" style="width:16%"></span></div><div class="sub" id="intakeStep">Pergunta 1 de 6</div></div></div></div><div class="panel"><div class="chip">🧭 Triagem emocional</div><h2 class="title" id="intakeTitle" style="margin-top:10px">Pergunta</h2><p class="sub">Isso define seu tema inicial e os jogos da sua Lição Diária.</p><div id="intakeOptions"></div><button id="intakeNext" class="btn dark" style="margin-top:14px;display:none" onclick="nextIntake()">Continuar</button></div><div class="disclaimer">Este protótipo é uma experiência gamificada de psicoeducação e não substitui psicoterapia.</div></section>
+
+<!-- ===== ANALYSIS ===== -->
+<section id="analysis" class="screen analysis-screen noscroll"><div class="analysis-wrap"><div class="analysis-ill">🔍</div><div class="res-title" style="font-size:25px">Montando seu universo...</div><div style="max-width:320px;color:rgba(253,246,236,.78);line-height:1.55">Estamos identificando seu foco principal e liberando sua trilha, jogos, missões e recompensas iniciais.</div><div class="analysis-bar-wrap"><div class="analysis-bar" id="analysisBar"></div></div><div class="analysis-lbl" id="analysisLbl">Lendo respostas…</div></div></section>
+
+<!-- ===== RESULT ===== -->
+<section id="result" class="screen"><div class="topbar row"><button class="icon-btn" onclick="go('intake')">←</button><div style="text-align:center"><h2 class="title">Seu foco</h2><p class="sub">Resultado inicial.</p></div><div style="width:42px"></div></div><div class="rank-card"><div class="chip dark">✨ tema sugerido</div><h2 class="brand" id="resultCategory" style="font-size:38px;line-height:1;margin-top:12px"></h2><p id="resultText" style="margin-top:10px;color:rgba(255,255,255,.86);line-height:1.48;max-width:330px"></p><div id="scoreBars" style="display:grid;gap:9px;margin-top:14px"></div></div><div class="panel" style="margin-top:14px"><div class="chip">🎁 O que você ganha</div><div class="mini-grid"><div class="mini-stat"><b>1</b><span class="tiny">Lição Diária</span></div><div class="mini-stat"><b>6</b><span class="tiny">trilhas livres</span></div><div class="mini-stat"><b>1</b><span class="tiny">liga semanal</span></div><div class="mini-stat"><b>1</b><span class="tiny">baú inicial</span></div></div><button class="btn" style="margin-top:14px" onclick="go('home')">Entrar no Lume Daily</button></div></section>
+
+<!-- ===== HOME (escolha de modo) ===== -->
+<section id="home" class="screen">
+  <div class="resbar" id="resbarHome"></div>
+  <div class="row" style="margin-bottom:4px"><div><div class="sub" style="margin:0">Olá,</div><h2 class="title" id="homeName">você</h2></div><button class="icon-btn" onclick="go('progress')">🏆</button></div>
+  <div class="mode-card mode-daily" style="margin-top:14px" onclick="openDaily()">
+    <div class="daily-ring" id="dailyRing"><div class="inner" id="dailyRingTxt">0/5</div></div>
+    <div class="mc-icon">🔥</div><div class="mc-title">Lição Diária</div>
+    <div class="mc-sub" id="dailySub">Seu treino personalizado de hoje, montado a partir das suas respostas.</div>
+    <div class="mc-cta" id="dailyCta">Começar lição →</div><div class="mc-art">📖</div>
+  </div>
+  <div class="mode-card mode-free" style="margin-top:14px" onclick="go('themes')">
+    <div class="mc-icon">🗺️</div><div class="mc-title">Modo Livre</div>
+    <div class="mc-sub">Explore 6 universos com trilhas de fases, jogos variados e desafios sem limite.</div>
+    <div class="mc-cta">Abrir mapa →</div><div class="mc-art">🎮</div>
+  </div>
+  <div class="panel" style="margin-top:14px">
+    <div class="row"><div class="chip">🔥 sua ofensiva</div><b style="color:var(--wine);font-size:15px"><span id="homeStreakNum">1</span> dias</b></div>
+    <div class="streak-cal" id="streakCal"></div>
+  </div>
+  <div class="quest-card" style="margin-top:14px">
+    <div class="row"><div><div class="chip">🎯 metas de hoje</div></div><div class="tiny-chip" id="questCount">0/3</div></div>
+    <div id="dailyQuests"></div>
+  </div>
+</section>
+
+<!-- ===== DAILY INTRO (abertura da lição) ===== -->
+<section id="dailyIntro" class="screen daily-intro-screen noscroll">
+  <div class="result-wrap">
+    <div class="chip dark">🔥 ofensiva de <span id="diStreak">1</span> dias</div>
+    <div class="splash-lumi" style="width:96px;height:112px;animation:none;transform:scale(.95)"><div class="top"></div><div class="body"></div><div class="eye l"></div><div class="eye r"></div><div class="mouth"></div></div>
+    <div class="res-title" id="diTitle">Lição de hoje</div>
+    <div style="color:rgba(253,246,236,.8);line-height:1.55;max-width:320px" id="diDesc">5 desafios rápidos sobre o seu tema. Mantenha a ofensiva acesa!</div>
+    <div class="res-rewards">
+      <div class="rwd">⭐ <span id="diXp">+60</span> XP</div>
+      <div class="rwd">💎 +15</div>
+      <div class="rwd">🎁 baú</div>
+    </div>
+    <button class="btn" style="max-width:310px" onclick="startDailyLesson()">Iniciar lição →</button>
+    <button class="btn secondary" style="max-width:310px;background:rgba(255,255,255,.06);color:#fff;border-color:rgba(255,255,255,.12)" onclick="go('home')">Agora não</button>
+  </div>
+</section>
+
+<!-- ===== THEMES ===== -->
+<section id="themes" class="screen"><div class="topbar row"><button class="icon-btn" onclick="go('home')">←</button><div style="text-align:center"><h2 class="title">Modo Livre</h2><p class="sub">Cada tema é uma trilha.</p></div><button class="icon-btn" onclick="go('progress')">🏆</button></div><div id="themeList" class="theme-grid"></div></section>
+
+<!-- ===== TRAIL (mapa de fases) ===== -->
+<section id="trail" class="screen noscroll">
+  <div class="trail-head">
+    <div class="row"><button class="icon-btn" style="background:rgba(255,255,255,.14);color:#fff" onclick="go('themes')">←</button>
+    <div style="text-align:center;flex:1"><h2 class="title" id="trailTitle" style="font-size:24px">Universo</h2><p class="sub" id="trailSub" style="color:rgba(255,255,255,.7);margin-top:2px">Trilha de fases</p></div>
+    <div class="res streak" style="background:rgba(255,255,255,.14);color:#fff"><span class="ic">⭐</span><span id="trailStars">0</span></div></div>
+    <div class="progress" style="margin-top:12px;background:rgba(255,255,255,.16)"><span id="trailBar" style="width:0%"></span></div>
+  </div>
+  <div class="trail-scroll"><div class="trail" id="trailNodes"></div></div>
+</section>
+
+<!-- ===== GAMEPLAY ===== -->
+<section id="gameplay" class="screen"><div class="resbar" id="resbarGame" style="padding-top:14px"></div><div class="row" style="margin-bottom:8px"><button class="icon-btn" onclick="quitGame()">←</button><div style="flex:1"><div class="progress"><span id="gameProgress" style="width:38%"></span></div><div class="sub" id="gameStep">Game terapêutico</div></div></div><div class="gameplay-hero"><div class="chip dark" id="gameBadge">Game</div><h2 class="brand" id="gameTitle" style="font-size:30px;line-height:1;margin-top:10px"></h2><p id="gameDesc" style="margin-top:8px;color:rgba(255,255,255,.86);line-height:1.4;font-size:13px"></p><div class="sparkles"><span></span><span></span><span></span><span></span></div></div><div id="gameplayArea" class="gameplay-area"></div></section>
+
+<!-- ===== RANKINGS ===== -->
+<section id="rankings" class="screen"><div class="topbar row"><button class="icon-btn" onclick="go('home')">←</button><div style="text-align:center"><h2 class="title">Liga semanal</h2><p class="sub">Ranking demo</p></div><button class="icon-btn" onclick="go('progress')">🏆</button></div><div class="rank-card"><div class="row"><div><div class="league">🏅 Liga <span id="rankLeague">Prata</span></div><h3 class="brand" style="font-size:30px;line-height:1;margin-top:10px">Seu desempenho na semana</h3></div><div class="tiny-chip" style="background:rgba(255,255,255,.12);color:#fff">demo</div></div><div class="mini-grid" style="margin-top:14px"><div class="mini-stat"><b id="rankXP">0</b><span class="tiny">XP</span></div><div class="mini-stat"><b id="rankGames">0</b><span class="tiny">games</span></div><div class="mini-stat"><b id="rankStreak">1</b><span class="tiny">sequência</span></div><div class="mini-stat"><b id="rankPosition">12º</b><span class="tiny">posição</span></div></div><div style="margin-top:12px;color:rgba(255,255,255,.76);font-size:12px">* ranking demonstrativo do protótipo, sem sincronização real.</div></div><div class="panel" style="margin-top:14px"><div class="chip">📈 Top desta semana</div><div id="rankingList" style="margin-top:10px"></div></div></section>
+
+<!-- ===== PROGRESS ===== -->
+<section id="progress" class="screen"><div class="topbar row"><button class="icon-btn" onclick="go('home')">←</button><div style="text-align:center"><h2 class="title">Progresso</h2><p class="sub">Seu inventário emocional.</p></div><div style="width:42px"></div></div>
+<div class="rank-card" style="background:linear-gradient(150deg,#7B1B2A,#3C0E1C)"><div class="row"><div><div class="chip dark">nível <span id="progLevel">1</span></div><h3 class="brand" id="progLevelName" style="font-size:26px;margin-top:8px">Iniciante</h3></div><div class="level-badge" style="width:64px;height:64px;box-shadow:none"><b style="font-size:30px" id="progLevelNum">1</b></div></div><div class="progress" style="margin-top:12px;background:rgba(255,255,255,.16)"><span id="levelBar" style="width:0%"></span></div><div class="sub" style="color:rgba(255,255,255,.7);margin-top:6px" id="levelHint">Faltam 100 XP para o próximo nível.</div></div>
+<div class="mini-grid"><div class="mini-stat"><b id="progXP">0</b><span class="tiny">XP total</span></div><div class="mini-stat"><b id="progStars">0</b><span class="tiny">estrelas</span></div><div class="mini-stat"><b id="progGames">0</b><span class="tiny">games</span></div><div class="mini-stat"><b id="progStreak">1</b><span class="tiny">sequência</span></div></div><div class="panel" style="margin-top:14px"><div class="chip">🎖️ medalhas</div><div id="medalList" style="margin-top:8px"></div></div><div class="panel" style="margin-top:14px;background:#FFF8E8"><div class="chip">🔓 acesso</div><h3 class="brand" style="font-size:28px;line-height:1;margin-top:10px;color:var(--wine)">Plataforma</h3><p class="sub" id="accessText">Modo demo liberado. Desbloqueie para abrir todos os temas e games.</p><button id="accessBtn" class="btn dark" style="margin-top:14px" onclick="go('plans')">Ver planos</button></div><div class="panel" style="margin-top:14px;background:#FFF2E0"><div class="chip">💛 convite Lume</div><h3 class="brand" style="font-size:28px;line-height:1;margin-top:10px">Primeiro momento gratuito</h3><p class="sub">Se esses temas têm causado sofrimento recorrente, você pode agendar um primeiro momento gratuito de 30 minutos com a equipe da Clínica Lume.</p><button class="btn dark" style="margin-top:14px" onclick="alert('Aqui entraria o link do WhatsApp ou da agenda da Clínica Lume.')">Agendar agora</button></div></section>
+
+<!-- ===== PLANS ===== -->
+<section id="plans" class="screen"><div class="topbar row"><button class="icon-btn" onclick="go('progress')">←</button><div style="text-align:center"><h2 class="title">Planos</h2><p class="sub">Pagamento simulado</p></div><div style="width:42px"></div></div><div class="hero"><div class="chip dark">🔒 desbloqueio premium</div><h2 class="brand" style="font-size:38px;line-height:1;margin-top:10px">Abra todos os universos</h2><p style="margin-top:10px;color:rgba(255,255,255,.86);line-height:1.45">Na versão real, aqui entraria integração com um gateway de pagamento.</p></div><div id="plansList"></div></section>
+
+<!-- ===== PAYMENT SUCCESS ===== -->
+<section id="paymentSuccess" class="screen payment-screen noscroll"><div class="result-wrap"><div class="res-big">✅</div><div class="res-title">Desbloqueio concluído!</div><div style="max-width:300px;color:rgba(253,246,236,.76);line-height:1.55">Todos os temas e jogos foram liberados neste protótipo.</div><div class="res-xp">🔓 acesso total</div><button class="btn" style="max-width:310px" onclick="unlockAndContinue()">Continuar para o app →</button></div></section>
+
+<!-- ===== STAR RESULT (fim de fase) ===== -->
+<section id="starResult" class="screen star-result-screen noscroll"><div class="result-wrap"><div class="res-big">🌟</div><div class="res-title" id="starTitle">Fase concluída!</div><div class="res-stars" id="starIcons"></div><div class="res-rewards" id="starRewards"></div><div style="color:rgba(253,246,236,.78);line-height:1.55;max-width:310px" id="starText">Você ganhou pontos e aproximou-se de novas recompensas.</div><div class="res-insight"><div class="res-insight-label">Aprendizado</div><div class="res-insight-text" id="starInsight">Cada jogo reforça uma habilidade emocional diferente.</div></div><button class="btn" style="max-width:310px" onclick="finishStarContinue()">Continuar →</button></div></section>
+
+<!-- ===== DAILY COMPLETE (fim da lição diária) ===== -->
+<section id="dailyComplete" class="screen daily-intro-screen noscroll"><div class="result-wrap"><div class="res-big">🔥</div><div class="res-title" id="dcTitle">Lição concluída!</div><div class="res-stars" id="dcStars"></div><div style="color:rgba(253,246,236,.8);line-height:1.5;max-width:320px" id="dcText">Sua ofensiva continua acesa. Volte amanhã para manter a sequência.</div><div class="res-rewards" id="dcRewards"></div><button class="btn" style="max-width:310px" onclick="claimDailyChest()">Abrir baú de recompensa 🎁</button></div></section>
+
+<!-- ===== CHEST OPEN ===== -->
+<section id="chestOpen" class="screen chest-screen noscroll"><div class="result-wrap"><div class="chest-rays" id="chestRays"></div><div class="res-title" id="chestTitle" style="font-size:24px">Toque para abrir!</div><div class="chest-big" id="chestBig" onclick="popChest()">🎁</div><div id="chestLoot" style="display:none;flex-direction:column;align-items:center;gap:14px"><div class="res-rewards" id="chestRewards"></div><button class="btn" style="max-width:310px" onclick="afterChest()">Coletar →</button></div></div></section>
+
+<!-- ===== LEVEL UP ===== -->
+<section id="levelUp" class="screen levelup-screen noscroll"><div class="result-wrap"><div class="chip dark">⚡ subiu de nível</div><div class="level-badge"><b id="luNum">2</b></div><div class="res-title" id="luName">Nível 2</div><div style="color:rgba(253,246,236,.8);line-height:1.5;max-width:300px" id="luText">Você está evoluindo no seu universo emocional!</div><div class="res-rewards"><div class="rwd">💎 +20 gemas</div><div class="rwd">❤️ vidas cheias</div></div><button class="btn" style="max-width:310px" onclick="afterLevelUp()">Continuar →</button></div></section>
+
+<!-- ===== NAV ===== -->
+<div class="nav" id="mainNav"><button data-target="home" onclick="go('home')"><i>🏠</i>Início</button><button data-target="themes" onclick="go('themes')"><i>🗺️</i>Trilhas</button><button data-target="dailyIntro" onclick="openDaily()"><i>🔥</i>Lição</button><button data-target="rankings" onclick="go('rankings')"><i>🏆</i>Liga</button><button data-target="progress" onclick="go('progress')"><i>⭐</i>Progresso</button></div>
+
+<!-- ===== OUT OF HEARTS MODAL ===== -->
+<div class="modal-back" id="heartModal"><div class="modal"><div class="m-emoji">💔</div><h3>Sem vidas!</h3><p class="sub" style="margin-top:6px">Você ficou sem corações. Espere recarregar, use gemas ou pratique no Modo Livre (sem perder vidas).</p><button class="btn" style="margin-top:16px" onclick="refillWithGems()">💎 Recarregar (30 gemas)</button><button class="btn secondary" style="margin-top:10px" onclick="closeHeartModal();go('themes')">Ir para Modo Livre</button><button class="btn secondary" style="margin-top:10px;background:transparent;border:none;color:var(--muted)" onclick="closeHeartModal()">Fechar</button></div></div>
+
+<div id="cfLayer" class="cf-layer"></div>
+</div>
+<script>
+/* ============ DADOS ============ */
+const categories={comunicacao:{label:'Comunicação',icon:'💬',desc:'Falar sem atacar, pedir com clareza e escutar sem virar defesa.',mission:'Conclua 2 games e 1 simulação de conversa.',medal:'Voz consciente'},sexualidade:{label:'Sexualidade',icon:'🌹',desc:'Trabalhar desejo, pressão, intimidade, segurança emocional e conversa íntima.',mission:'Jogue 2 games e complete o termômetro do desejo.',medal:'Intimidade segura'},dependencia:{label:'Dependência emocional',icon:'🤍',desc:'Reduzir urgência, medo de abandono e busca de validação a todo custo.',mission:'Pratique pausa, carta de enfrentamento e uma sequência segura.',medal:'Base segura'},ciumes:{label:'Ciúmes',icon:'👁️',desc:'Separar fato de ameaça, reduzir controle e ampliar segurança emocional.',mission:'Complete 2 games de lógica e 1 quiz.',medal:'Olhar seguro'},autoestima:{label:'Autoestima',icon:'🪞',desc:'Fortalecer valor próprio, reduzir comparação e desafiar autocrítica.',mission:'Encontre palavras, vença a forca e complete uma missão de valor.',medal:'Valor próprio'},limites:{label:'Limites',icon:'🛡️',desc:'Dizer não com clareza, sem autoabandono e com menos culpa.',mission:'Monte 2 frases de limite e complete 1 quiz.',medal:'Fronteira saudável'}};
+const intake=[{title:'Qual tema mais precisa de atenção hoje?',options:[['Comunicação e brigas','comunicacao','💬','Falar sem virar conflito'],['Medo de abandono','dependencia','🤍','Ansiedade relacional'],['Sexualidade e intimidade','sexualidade','🌹','Desejo e conexão'],['Autoestima','autoestima','🪞','Valor próprio'],['Ciúmes','ciumes','👁️','Insegurança e controle'],['Limites','limites','🛡️','Dizer não sem culpa']]},{title:'Quando esse tema aparece, o que você mais faz?',options:[['Explodo ou cobro','comunicacao','🔥','Reação intensa'],['Procuro garantia','dependencia','📱','Busca de segurança'],['Evito ou travo','sexualidade','🌙','Evitação'],['Me culpo','autoestima','😞','Autocrítica'],['Investigo ou comparo','ciumes','🔍','Controle'],['Me calo','limites','🤐','Silêncio']]},{title:'Qual pensamento aparece com mais frequência?',options:[['Não adianta falar','comunicacao','💬','Impotência'],['Vou ser deixada','dependencia','💔','Perda'],['Tem algo errado comigo','sexualidade','🪞','Vergonha'],['Não sou suficiente','autoestima','🥀','Insuficiência'],['Existe outra pessoa','ciumes','👁️','Ameaça'],['Se eu falar vai piorar','limites','🛡️','Medo']]},{title:'O que você mais quer conseguir?',options:[['Conversar melhor','comunicacao','🗣️','Comunicação'],['Ser mais segura','dependencia','🧘‍♀️','Autonomia'],['Falar de intimidade','sexualidade','🌹','Intimidade'],['Me valorizar','autoestima','🪞','Valor'],['Confiar mais','ciumes','🤍','Confiança'],['Me posicionar','limites','🛡️','Limite']]},{title:'Qual experiência parece mais útil?',options:[['Simular conversas','comunicacao','💬','Treino prático'],['Pausar antes do impulso','dependencia','⏳','Regulação'],['Mito ou verdade sobre desejo','sexualidade','🌹','Psicoeducação'],['Caça-palavras do valor','autoestima','🔎','Leve e educativo'],['Fato ou ameaça','ciumes','⚖️','Lógica emocional'],['Completar frases de limite','limites','✍️','Frases práticas']]},{title:'Qual frase mais parece com você?',options:[['Quero ser ouvida sem brigar','comunicacao','👂','Escuta'],['Tenho medo de amar mais','dependencia','🤍','Abandono'],['Quero intimidade sem pressão','sexualidade','🌹','Segurança'],['Me sinto insuficiente','autoestima','🪞','Insuficiência'],['Não consigo confiar totalmente','ciumes','👁️','Confiança'],['Eu digo sim querendo dizer não','limites','🛡️','Autoabandono']]}];
+const themeGames={comunicacao:[{id:'comm-myth',type:'quiz',icon:'⚡',title:'Pedido ou cobrança?',desc:'Descubra qual resposta é mais assertiva.',xp:35,rarity:'comum',question:'Qual frase é um pedido claro?',options:[['Você nunca me ajuda.','bad','📣','Começa com acusação e tende a gerar defesa.'],['Você pode me ajudar com isso hoje?','good','🤝','É claro, possível e sem ataque.'],['Cansei de implorar.','bad','🥀','Expressa desgaste, mas não organiza pedido.'],['Se importasse, faria sozinho.','bad','👀','É indireta e cobrança.']]},{id:'comm-match',type:'match',icon:'🔗',title:'Ligar pares assertivos',desc:'Una acusação com a versão saudável.',xp:45,rarity:'raro',pairs:[['Você nunca me escuta','Eu preciso me sentir ouvida quando falo algo importante.'],['Você só pensa em você','Eu preciso sentir mais parceria nas decisões.'],['Você nunca ajuda','Você pode me ajudar com essa tarefa hoje?']]},{id:'comm-sim',type:'simulation',icon:'💬',title:'Simulação de conversa',desc:'Treine um diálogo difícil sem atacar.',xp:55,rarity:'épico',situation:'Você está falando algo importante e a pessoa fica no celular.',options:[['Você nunca liga pra mim.','bad','📣','Começa com acusação e aumenta defesa.'],['Eu me senti ignorada quando tentei falar e você ficou no celular. Podemos conversar sem celular por alguns minutos?','good','💬','Comunica fato, emoção e pedido claro.'],['Deixa pra lá, não importa.','bad','🤐','Evita a conversa e acumula mágoa.']]},{id:'comm-seq',type:'sequence',icon:'🧩',title:'Sequência de conversa',desc:'Organize uma conversa saudável.',xp:40,rarity:'comum',items:['Pausar e respirar','Descrever o fato','Nomear emoção','Fazer pedido claro'],feedback:'Antes de falar, regular é tão importante quanto saber o que pedir.'}],sexualidade:[{id:'sex-myth',type:'myth',icon:'🌹',title:'Verdade ou mito do desejo',desc:'Quebre mitos sobre desejo e intimidade.',xp:35,rarity:'comum',data:[{text:'Se existe amor, o desejo sempre aparece naturalmente.',answer:false,feedback:'Mito. O desejo pode ser espontâneo ou responsivo, e depende de contexto, vínculo, cansaço e segurança.'},{text:'Pressão pode diminuir o desejo.',answer:true,feedback:'Verdade. Cobrança e medo de decepcionar podem bloquear segurança e prazer.'},{text:'Falar sobre intimidade pode fortalecer a conexão.',answer:true,feedback:'Verdade. Conversas cuidadosas reduzem vergonha e aumentam clareza.'}]},{id:'sex-thermo',type:'thermo',icon:'🌡️',title:'Termômetro do desejo',desc:'Veja como segurança, pressão e cansaço impactam a intimidade.',xp:55,rarity:'épico',bars:['Segurança emocional','Cansaço','Pressão','Conexão','Desejo']},{id:'sex-sim',type:'simulation',icon:'💌',title:'Conversa íntima',desc:'Fale sobre intimidade sem cobrança.',xp:50,rarity:'raro',situation:'Você quer conversar sobre intimidade, mas tem medo de soar como cobrança.',options:[['Você nunca me procura.','bad','📣','Pode soar acusatório e aumentar retração.'],['Quero conversar com carinho sobre nossa intimidade, sem pressão. Para mim é importante entender como estamos.','good','🌹','Cria segurança e abre espaço para diálogo.'],['Acho que tem algo errado comigo.','bad','🪞','Transforma o tema em culpa pessoal.']]},{id:'sex-cards',type:'cards',icon:'🃏',title:'Cartas da intimidade',desc:'Monte uma carta de segurança sexual.',xp:45,rarity:'raro'}],dependencia:[{id:'dep-cards',type:'cards',icon:'🃏',title:'Carta de enfrentamento',desc:'Monte um cartão para a ansiedade relacional.',xp:45,rarity:'raro'},{id:'dep-seq',type:'sequence',icon:'⏳',title:'Pausa antes da mensagem',desc:'Organize a sequência mais segura.',xp:40,rarity:'comum',items:['Respirar por 2 minutos','Esperar 10 minutos','Escrever e não enviar','Escolher ação de cuidado'],feedback:'Nem toda ansiedade precisa virar mensagem, cobrança ou teste.'},{id:'dep-quiz',type:'quiz',icon:'⚖️',title:'Urgência ou cuidado?',desc:'Escolha a resposta mais regulada.',xp:35,rarity:'comum',question:'Qual ação é mais segura quando a ansiedade relacional dispara?',options:[['Mandar três mensagens seguidas.','bad','📱','Isso costuma aliviar só por segundos e depois aumentar dependência.'],['Pausar, respirar e esperar um pouco antes de decidir.','good','🫁','A regulação cria espaço para agir com mais clareza.'],['Checar as redes sociais.','bad','🔍','Pode aumentar ainda mais o ciclo de comparação e ameaça.'],['Fingir indiferença.','bad','🧊','Evita o impulso, mas não regula a emoção.']]},{id:'dep-complete',type:'complete',icon:'✍️',title:'Frase de autonomia',desc:'Monte uma frase de base segura.',xp:38,rarity:'comum'}],ciumes:[{id:'ciumes-fact',type:'quiz',icon:'⚖️',title:'Fato ou ameaça?',desc:'Separe evidência de interpretação.',xp:35,rarity:'comum',question:'Qual alternativa é um fato?',options:[['Ele curtiu uma foto.','good','📲','Isso é observável. O significado ainda precisa ser compreendido.'],['Ele está interessado nela.','bad','👁️','Isso é interpretação.'],['Ele vai me trocar.','bad','💔','Isso é previsão catastrófica.'],['Eu não sou suficiente.','bad','🪞','Isso é crença de desvalor.']]},{id:'ciumes-seq',type:'sequence',icon:'🧩',title:'Sequência segura',desc:'Organize a reação mais saudável diante do gatilho.',xp:45,rarity:'raro',items:['Respirar antes de agir','Separar fato de interpretação','Nomear a emoção','Decidir se vale conversar'],feedback:'O ciúme cresce quando a interpretação vem antes do fato.'},{id:'ciumes-sim',type:'simulation',icon:'💬',title:'Conversa sobre gatilho',desc:'Treine uma conversa sem acusação.',xp:48,rarity:'raro',situation:'Você sentiu ciúme depois de ver uma interação nas redes sociais.',options:[['Eu sei que você está me escondendo algo.','bad','⚡','Acusação tende a escalar o conflito.'],['Eu fiquei insegura com o que vi e queria conversar sobre isso sem briga.','good','🤍','Nomeia a emoção e abre diálogo.'],['Vou investigar sozinha.','bad','🔍','Alimenta controle e ansiedade.']]},{id:'ciumes-match',type:'match',icon:'🔗',title:'Ligar gatilho e resposta',desc:'Una gatilhos a respostas mais reguladas.',xp:50,rarity:'épico',pairs:[['Demora de resposta','Pausar antes de concluir abandono'],['Curtida em foto','Separar fato de ameaça'],['Sensação de exclusão','Nomear insegurança sem atacar']]}],autoestima:[{id:'auto-word',type:'wordsearch',icon:'🔎',title:'Caça-palavras do valor',desc:'Encontre palavras ligadas a valor próprio.',xp:35,rarity:'comum',words:['VALOR','RESPEITO','CUIDADO','CORAGEM']},{id:'auto-hang',type:'hangman',icon:'🪢',title:'Forca do valor',desc:'Descubra o conceito emocional escondido.',xp:40,rarity:'comum',word:'AUTOCOMPAIXAO',hint:'Tratar a si mesma com gentileza, especialmente nos dias difíceis.'},{id:'auto-quiz',type:'quiz',icon:'🪞',title:'Pensamento justo?',desc:'Treine respostas mais equilibradas.',xp:38,rarity:'comum',question:'Qual frase é mais justa com você?',options:[['Eu sempre estrago tudo.','bad','🥀','É uma generalização dura e pouco precisa.'],['Eu errei, mas isso não define todo o meu valor.','good','🤍','Reconhece o erro sem destruir a identidade.'],['Todo mundo é melhor do que eu.','bad','⚖️','Comparação global tende a alimentar desvalor.'],['Se não for perfeito, não vale.','bad','🧱','Perfeccionismo costuma aumentar sofrimento.']]},{id:'auto-cards',type:'cards',icon:'🌤️',title:'Cartão de valor',desc:'Monte um lembrete de valor próprio.',xp:44,rarity:'raro'}],limites:[{id:'lim-quiz',type:'quiz',icon:'🛡️',title:'Quiz dos limites',desc:'Escolha a resposta mais saudável.',xp:35,rarity:'comum',question:'Qual frase comunica limite sem atacar?',options:[['Você é muito folgado.','bad','⚡','Ataca a pessoa e gera defesa.'],['Eu entendo o seu pedido, mas agora não consigo fazer isso.','good','🛡️','É firme, clara e respeitosa.'],['Tá, eu faço, mesmo sem querer.','bad','😞','Anula o próprio limite.'],['Some da minha frente.','bad','🚪','Pode escalar o conflito.']]},{id:'lim-complete',type:'complete',icon:'✍️',title:'Monte seu limite',desc:'Forme uma frase pronta usando blocos.',xp:45,rarity:'raro'},{id:'lim-sim',type:'simulation',icon:'💬',title:'Pedido que ultrapassa limite',desc:'Treine dizer não sem se abandonar.',xp:50,rarity:'épico',situation:'Alguém faz um pedido que ultrapassa seu limite atual.',options:[['Eu faço, tudo bem.','bad','😞','Você se anula para evitar desconforto.'],['Eu entendo que isso é importante, mas agora eu não consigo. Posso ajudar em outro momento.','good','🛡️','Limite claro, respeitoso e possível.'],['Você sempre pede demais.','bad','⚡','Começa atacando a pessoa.']]},{id:'lim-match',type:'match',icon:'🔗',title:'Ligar limite e necessidade',desc:'Una frases a necessidades por trás do limite.',xp:42,rarity:'comum',pairs:[['Preciso de tempo','Respeito ao próprio ritmo'],['Agora não consigo','Proteção de energia'],['Posso ajudar depois','Cooperação sem autoabandono']]}]};
+const plans=[{id:'basic',title:'Jornada',price:'R$ 19',items:['Tema principal liberado','Missões e recompensas','Jogos essenciais']},{id:'premium',title:'Lume Premium',price:'R$ 39',items:['Todos os temas','Todos os jogos','Ligas, baús e universo completo'],premium:true}];
+/* Lição diária = sequência de 5 jogos do tema (fixos), com fallback de outros temas */
+function buildDailyLesson(theme){const pool=[...(themeGames[theme]||[])];const extra=Object.keys(themeGames).filter(k=>k!==theme).flatMap(k=>themeGames[k]);const seq=[];for(let i=0;i<5;i++){seq.push(pool[i%pool.length]||extra[i%extra.length])}return seq.map(g=>({...g,theme}))}
+</script>
+<script>
+/* ============ ESTADO ============ */
+const defaultState={screen:'splash',user:null,intakeIndex:0,intakeAnswers:[],scores:{comunicacao:0,sexualidade:0,dependencia:0,ciumes:0,autoestima:0,limites:0},category:'comunicacao',theme:'comunicacao',unlocked:false,
+xp:0,stars:0,gamesDone:0,streak:1,gems:30,hearts:5,maxHearts:5,level:1,
+streakDays:[true,false,false,false,false,false,false],lastDaily:null,dailyProgress:0,dailyDone:false,
+trailProgress:{},completed:{},themeXP:{},themeStars:{},themeGamesDone:{},
+currentGame:null,lastScreen:'trail',mode:'free',dailyQueue:[],dailyIdx:0,questDone:{q1:false,q2:false,q3:false},
+selectedPlan:'premium',lastResult:{title:'',stars:0,xp:0,insight:'',next:'trail'},pendingChest:null,
+mythIndex:0,hangUsed:[],matchSel:null,matchDone:[],seqItems:[],thermo:{},builder:{emotion:'',reminder:'',action:''},completeParts:{},wordFound:[],wordSel:'',authTab:'login'};
+let state=load();function load(){try{return {...defaultState,...JSON.parse(localStorage.getItem('lumeGameUniverseV2')||'{}')}}catch(e){return {...defaultState}}}
+function save(){localStorage.setItem('lumeGameUniverseV2',JSON.stringify(state))}
+const LEVELS=[0,100,250,450,700,1000,1400,1900,2500,3200,4000];
+const LEVEL_NAMES=['Iniciante','Explorador','Aprendiz','Praticante','Consciente','Equilibrado','Sereno','Guardião','Sábio','Mestre','Lenda Lume'];
+
+/* ============ NAVEGAÇÃO ============ */
+const NAV_SCREENS=['home','themes','trail','gameplay','rankings','progress','plans'];
+function go(id){state.screen=id;document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active');
+const showNav=NAV_SCREENS.includes(id);document.getElementById('mainNav').classList.toggle('hidden',!showNav);
+document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.target===id));
+const sc=document.getElementById(id);if(sc)sc.scrollTop=0;save();render()}
+
+/* ============ RECURSOS (vidas, gemas, xp, nível) ============ */
+function levelForXP(xp){let lv=1;for(let i=1;i<LEVELS.length;i++){if(xp>=LEVELS[i])lv=i+1}return lv}
+function checkLevelUp(){const newLv=levelForXP(state.xp);if(newLv>state.level){state.level=newLv;state.gems+=20;state.hearts=state.maxHearts;save();return true}return false}
+function spendHeart(){if(state.hearts>0){state.hearts--;save();flashRes('heart');toast('💔','Você perdeu um coração');}if(state.hearts<=0){openHeartModal();return false}return true}
+function refillWithGems(){if(state.gems>=30){state.gems-=30;state.hearts=state.maxHearts;save();closeHeartModal();toast('❤️','Vidas recarregadas!');renderResbars()}else{toast('💎','Gemas insuficientes')}}
+function openHeartModal(){document.getElementById('heartModal').classList.add('show')}
+function closeHeartModal(){document.getElementById('heartModal').classList.remove('show')}
+
+/* ============ UI HELPERS ============ */
+function toast(ic,txt){const t=document.getElementById('toast');t.innerHTML=`<span>${ic}</span>${txt}`;t.classList.remove('show');void t.offsetWidth;t.classList.add('show')}
+function flashRes(type){document.querySelectorAll('.res.'+type).forEach(r=>{r.classList.remove('pulse');void r.offsetWidth;r.classList.add('pulse')})}
+function comboFlash(txt){const c=document.getElementById('comboFlash');c.textContent=txt;c.classList.remove('show');void c.offsetWidth;c.classList.add('show')}
+function resbarHTML(){return `<div class="res heart"><span class="ic">❤️</span>${state.hearts}</div><div class="res gem"><span class="ic">💎</span>${state.gems}</div><div class="res streak"><span class="ic">🔥</span>${state.streak}</div><div class="res" style="margin-left:auto;color:var(--wine)"><span class="ic">⭐</span>${state.xp} XP</div>`}
+function renderResbars(){['resbarHome','resbarGame'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=resbarHTML()})}
+
+/* ============ SPLASH / AUTH ============ */
+function bootSplash(){if(state.user){setTimeout(()=>go('home'),2600);return}setTimeout(()=>go(state.intakeAnswers.length?'start':'start'),2600)}
+function setAuthTab(t){state.authTab=t;document.getElementById('tabLogin').classList.toggle('on',t==='login');document.getElementById('tabSignup').classList.toggle('on',t==='signup');document.getElementById('signupName').style.display=t==='signup'?'block':'none';document.getElementById('authBtn').textContent=t==='signup'?'Criar conta':'Entrar';save()}
+function doAuth(){const name=(document.getElementById('inpName').value||'').trim();const email=(document.getElementById('inpEmail').value||'').trim();
+if(state.authTab==='signup'&&!name){toast('✏️','Digite seu nome');return}
+state.user={name:name||(email?email.split('@')[0]:'você'),email};save();
+// novo usuário sem triagem → vai pra triagem; senão home
+if(!state.intakeAnswers.length){go('intake')}else{go('home')}}
+function socialLogin(){state.user={name:'Você',email:'demo@lume.app'};save();if(!state.intakeAnswers.length)go('intake');else go('home')}
+</script>
+<script>
+/* ============ RENDER MASTER ============ */
+function render(){renderResbars();renderIntake();renderResult();renderHome();renderThemes();renderTrail();renderGameplay();renderRankings();renderProgress();renderPlans()}
+
+/* ---- INTAKE ---- */
+function renderIntake(){const q=intake[state.intakeIndex]||intake[0],title=document.getElementById('intakeTitle');if(!title)return;title.textContent=q.title;document.getElementById('intakeStep').textContent=`Pergunta ${state.intakeIndex+1} de ${intake.length}`;document.getElementById('intakeBar').style.width=`${((state.intakeIndex+1)/intake.length)*100}%`;const box=document.getElementById('intakeOptions');box.innerHTML='';const selected=state.intakeAnswers[state.intakeIndex];q.options.forEach((o,idx)=>{const[text,cat,icon,sub]=o;const btn=document.createElement('button');btn.className='option '+(selected&&selected.idx===idx?'selected':'');btn.innerHTML=`<div class="visual">${icon}</div><div><div class="opt-title">${text}</div><div class="opt-sub">${sub}</div></div>`;btn.onclick=()=>{state.intakeAnswers[state.intakeIndex]={idx,text,cat};document.getElementById('intakeNext').style.display='block';save();renderIntake()};box.appendChild(btn)});document.getElementById('intakeNext').style.display=selected?'block':'none'}
+function nextIntake(){if(state.intakeIndex<intake.length-1){state.intakeIndex++;save();renderIntake();return}computeScores();go('analysis');runAnalysis()}
+function computeScores(){state.scores={comunicacao:0,sexualidade:0,dependencia:0,ciumes:0,autoestima:0,limites:0};state.intakeAnswers.forEach((a,i)=>{if(!a)return;state.scores[a.cat]+=[0,2,4].includes(i)?2:1});let best='comunicacao',max=-1;Object.entries(state.scores).forEach(([k,v])=>{if(v>max){max=v;best=k}});state.category=best;state.theme=best}
+function runAnalysis(){const bar=document.getElementById('analysisBar'),lbl=document.getElementById('analysisLbl');const steps=[['Lendo respostas…',18],['Definindo tema principal…',42],['Montando sua Lição Diária…',66],['Carregando trilhas e jogos…',88],['Pronto!',100]];let i=0;bar.style.width='0%';const t=setInterval(()=>{lbl.textContent=steps[i][0];bar.style.width=steps[i][1]+'%';i++;if(i>=steps.length){clearInterval(t);setTimeout(()=>go('result'),450)}},520)}
+function renderResult(){const cat=categories[state.category]||categories.comunicacao;const el=document.getElementById('resultCategory');if(!el)return;el.textContent=`${cat.icon} ${cat.label}`;document.getElementById('resultText').textContent=cat.desc;const bars=document.getElementById('scoreBars');bars.innerHTML='';const max=Math.max(1,...Object.values(state.scores));Object.entries(categories).forEach(([k,c])=>{const v=state.scores[k]||0;const row=document.createElement('div');row.innerHTML=`<div style="display:grid;grid-template-columns:115px 1fr 28px;align-items:center;gap:8px;color:#fff;font-size:12px;font-weight:800"><span>${c.icon} ${c.label}</span><div style="height:9px;background:rgba(255,255,255,.13);border-radius:999px;overflow:hidden"><span style="display:block;height:100%;background:linear-gradient(90deg,#FFD06D,#FFAB39);width:${(v/max)*100}%"></span></div><span>${v}</span></div>`;bars.appendChild(row)})}
+
+/* ---- HOME ---- */
+function todayKey(){return new Date().toISOString().slice(0,10)}
+function renderHome(){if(!document.getElementById('homeName'))return;document.getElementById('homeName').textContent=state.user?state.user.name:'você';
+const cat=categories[state.category]||categories.comunicacao;
+// daily ring
+const isDoneToday=state.lastDaily===todayKey()&&state.dailyDone;const pct=isDoneToday?100:(state.dailyProgress/5)*100;
+const ring=document.getElementById('dailyRing');if(ring){ring.style.setProperty('--pct',pct+'%');document.getElementById('dailyRingTxt').textContent=isDoneToday?'✓':`${state.dailyProgress}/5`}
+document.getElementById('dailySub').textContent=isDoneToday?`Lição de hoje concluída! Volte amanhã para manter a ofensiva de ${state.streak} dias.`:`Treino de ${cat.label.toLowerCase()} — 5 desafios rápidos montados pra você.`;
+document.getElementById('dailyCta').textContent=isDoneToday?'Concluída ✓':'Começar lição →';
+document.getElementById('homeStreakNum').textContent=state.streak;
+// streak calendar
+const cal=document.getElementById('streakCal');const labels=['S','T','Q','Q','S','S','D'];cal.innerHTML='';state.streakDays.forEach((on,i)=>{const today=i===Math.min(6,state.streak-1);cal.innerHTML+=`<div class="streak-day ${on?'on':''} ${today?'today':''}"><div class="dot">${on?'🔥':''}</div><div class="lbl">${labels[i]}</div></div>`});
+// quests
+const q=document.getElementById('dailyQuests');const quests=[['q1','Jogue 1 desafio','🎮',state.questDone.q1],['q2','Acerte 3 respostas','🎯',state.questDone.q2],['q3','Complete a Lição Diária','🔥',state.questDone.q3]];let done=0;q.innerHTML='';quests.forEach(([k,t,ic,ok])=>{if(ok)done++;q.innerHTML+=`<div class="quest-row"><div style="display:flex;align-items:center;gap:10px"><div class="visual" style="width:40px;height:40px;font-size:20px;flex-basis:40px">${ic}</div><b style="font-size:13px">${t}</b></div><div style="font-size:20px">${ok?'✅':'⬜'}</div></div>`});document.getElementById('questCount').textContent=`${done}/3`}
+
+/* ---- DAILY LESSON ---- */
+function openDaily(){const cat=categories[state.category]||categories.comunicacao;
+if(state.lastDaily===todayKey()&&state.dailyDone){toast('🔥','Lição de hoje já concluída!');go('home');return}
+document.getElementById('diStreak').textContent=state.streak;document.getElementById('diTitle').textContent=`Lição de ${cat.label}`;
+document.getElementById('diDesc').textContent=`5 desafios rápidos sobre ${cat.label.toLowerCase()}. Mantenha a ofensiva acesa e ganhe recompensas!`;
+go('dailyIntro')}
+function startDailyLesson(){state.mode='daily';state.dailyQueue=buildDailyLesson(state.category);state.dailyIdx=0;state.dailyProgress=0;state.lastDaily=todayKey();save();loadNextDaily()}
+function loadNextDaily(){if(state.dailyIdx>=state.dailyQueue.length){finishDaily();return}const g=state.dailyQueue[state.dailyIdx];startGame(g,'home',g.theme)}
+function finishDaily(){state.dailyDone=true;state.questDone.q3=true;
+// streak update
+if(!state.streakDays[Math.min(6,state.streak-1)]){}
+state.streakDays[Math.min(6,state.streak)]=true;state.streak+=1;
+const totalXP=60,gems=15;state.gems+=gems;
+document.getElementById('dcTitle').textContent='Lição concluída! 🔥';
+document.getElementById('dcStars').innerHTML=[1,2,3,4,5].map(()=>'<span>⭐</span>').join('');
+document.getElementById('dcText').textContent=`Ofensiva de ${state.streak} dias! Volte amanhã para não perder a sequência.`;
+document.getElementById('dcRewards').innerHTML=`<div class="rwd">⭐ +${totalXP} XP</div><div class="rwd">💎 +${gems}</div><div class="rwd">🔥 ${state.streak} dias</div>`;
+state.pendingChest={gems:20,xp:30,gemsLabel:'+20 gemas',item:'Carta da semana'};
+save();confetti();go('dailyComplete')}
+function claimDailyChest(){go('chestOpen');resetChest()}
+
+/* ---- THEMES (modo livre) ---- */
+function renderThemes(){const list=document.getElementById('themeList');if(!list)return;list.innerHTML='';Object.entries(categories).forEach(([key,cat],idx)=>{const unlocked=idx<3||state.unlocked||key===state.category;const games=themeGames[key]||[];const prog=state.trailProgress[key]||0;const total=games.length;const card=document.createElement('div');card.className='theme-card '+(!unlocked?'locked':'');card.innerHTML=`<div class="theme-top"><div style="display:flex;gap:12px;align-items:flex-start"><div class="theme-icon">${cat.icon}</div><div><div class="theme-title">${cat.label}</div><div class="sub">${cat.desc}</div></div></div><div class="tiny-chip">${total} fases</div></div><div class="progress" style="margin-top:12px"><span style="width:${total?(prog/total)*100:0}%"></span></div><div class="theme-badges" style="margin-top:10px"><span class="tiny-chip">${state.themeXP[key]||0} XP</span><span class="tiny-chip">${state.themeStars[key]||0} ⭐</span><span class="tiny-chip">${prog}/${total} fases</span></div><div class="theme-footer"><b>${unlocked?'Abrir trilha':'Bloqueado'}</b><span>${unlocked?'🗺️':'🔒'}</span></div><div class="orb"></div>`;card.onclick=()=>{if(!unlocked){go('plans');return}state.theme=key;save();go('trail')};list.appendChild(card)})}
+
+/* ---- TRAIL (mapa de fases) ---- */
+function renderTrail(){const key=state.theme||state.category,cat=categories[key];if(!cat||!document.getElementById('trailNodes'))return;
+document.getElementById('trailTitle').textContent=`${cat.icon} ${cat.label}`;
+document.getElementById('trailSub').textContent=cat.mission;
+document.getElementById('trailStars').textContent=state.themeStars[key]||0;
+const games=themeGames[key]||[];const prog=state.trailProgress[key]||0;
+document.getElementById('trailBar').style.width=`${games.length?(prog/games.length)*100:0}%`;
+const wrap=document.getElementById('trailNodes');wrap.innerHTML='';
+const offsets=[0,46,70,46,0,-46,-70,-46];
+games.forEach((g,i)=>{const status=i<prog?'done':(i===prog?'current':'locked');const unlockedTheme=Object.keys(categories).indexOf(key)<3||state.unlocked||key===state.category;const lock=status==='locked'||(!unlockedTheme&&i>=3);
+const isBoss=(i+1)%5===0||i===games.length-1;
+const node=document.createElement('div');node.className=`node ${status} ${isBoss?'node-boss':''}`;node.style.transform=`translateX(${offsets[i%offsets.length]}px)`;
+const starStr=i<prog?(state.nodeStars&&state.nodeStars[key+i]?'⭐'.repeat(state.nodeStars[key+i]):'⭐⭐⭐'):'';
+node.innerHTML=`<div class="node-disc">${status==='done'?'✓':(status==='locked'?'🔒':(isBoss?'👑':g.icon))}</div>${starStr?`<div class="node-stars">${starStr}</div>`:''}`;
+node.onclick=()=>{if(status==='locked'){toast('🔒','Conclua a fase anterior primeiro');return}if(lock&&i>=3&&!state.unlocked){go('plans');return}startGame({...g},'trail',key,i)};
+wrap.appendChild(node);
+if(isBoss&&i<games.length-1){const sep=document.createElement('div');sep.className='trail-sep';sep.textContent='🏁 novo trecho';wrap.appendChild(sep)}});
+// botão extra de prática infinita
+const more=document.createElement('div');more.style.cssText='text-align:center;margin-top:22px;padding:0 24px';more.innerHTML=`<button class="btn secondary small" onclick="practiceRandom('${key}')">🎲 Desafio aleatório (prática livre)</button>`;wrap.appendChild(more)}
+function practiceRandom(key){const games=themeGames[key]||[];const g=games[Math.floor(Math.random()*games.length)];if(g)startGame({...g},'trail',key,-1)}
+
+/* ---- RANKINGS ---- */
+function currentRankPosition(){return Math.max(1,25-Math.floor(state.xp/30))}
+function currentLeague(){if(state.xp>=300)return 'Ouro';if(state.xp>=180)return 'Prata';if(state.xp>=80)return 'Bronze+';return 'Bronze'}
+function renderRankings(){if(!document.getElementById('rankLeague'))return;document.getElementById('rankLeague').textContent=currentLeague();document.getElementById('rankXP').textContent=state.xp;document.getElementById('rankGames').textContent=state.gamesDone;document.getElementById('rankStreak').textContent=state.streak;document.getElementById('rankPosition').textContent=`${currentRankPosition()}º`;const data=[['Aline',430],['Mirela',390],['Dani',350],['Camila',330],['Lia',310],[state.user?state.user.name:'Você',state.xp],['Rafa',Math.max(40,state.xp-15)],['Bia',Math.max(35,state.xp-28)]].sort((a,b)=>b[1]-a[1]);const me=state.user?state.user.name:'Você';const list=document.getElementById('rankingList');list.innerHTML='';data.slice(0,8).forEach((r,i)=>{const medal=['🥇','🥈','🥉'][i]||`${i+1}º`;const row=document.createElement('div');row.className='rank-row '+(r[0]===me?'me':'');row.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><b style="min-width:26px">${medal}</b><div>${r[0]}</div></div><div><b>${r[1]} XP</b></div>`;list.appendChild(row)})}
+
+/* ---- PROGRESS ---- */
+function renderProgress(){if(!document.getElementById('progXP'))return;document.getElementById('progXP').textContent=state.xp;document.getElementById('progStars').textContent=state.stars;document.getElementById('progGames').textContent=state.gamesDone;document.getElementById('progStreak').textContent=state.streak;
+const lv=state.level;document.getElementById('progLevel').textContent=lv;document.getElementById('progLevelNum').textContent=lv;document.getElementById('progLevelName').textContent=LEVEL_NAMES[lv-1]||'Lenda';
+const cur=LEVELS[lv-1]||0,next=LEVELS[lv]||(cur+500);const pct=Math.min(100,((state.xp-cur)/(next-cur))*100);document.getElementById('levelBar').style.width=pct+'%';document.getElementById('levelHint').textContent=lv>=LEVELS.length?'Nível máximo alcançado!':`Faltam ${Math.max(0,next-state.xp)} XP para o nível ${lv+1}.`;
+document.getElementById('accessText').textContent=state.unlocked?'Todos os universos e jogos estão desbloqueados neste protótipo.':'Modo demo liberado. Desbloqueie para abrir todos os temas e games.';document.getElementById('accessBtn').style.display=state.unlocked?'none':'block';
+const medals=[['🎮','Primeiro jogo',state.gamesDone>=1],['🔥','Constância',state.streak>=3],['⭐','Colecionadora',state.stars>=20],['🏅','Liga em movimento',state.xp>=120],['💬','Voz consciente',(state.themeGamesDone.comunicacao||0)>=2],['🌹','Intimidade segura',(state.themeGamesDone.sexualidade||0)>=2],['🛡️','Fronteira saudável',(state.themeGamesDone.limites||0)>=2],['👁️','Olhar seguro',(state.themeGamesDone.ciumes||0)>=2],['🤍','Base segura',(state.themeGamesDone.dependencia||0)>=2],['💎','Nível 3',state.level>=3]];const box=document.getElementById('medalList');box.innerHTML='';medals.forEach(m=>{const div=document.createElement('div');div.className='medal '+(!m[2]?'locked':'');div.innerHTML=`<i>${m[0]}</i><div><div class="opt-title">${m[1]}</div><div class="opt-sub">${m[2]?'Conquistada':'Bloqueada'}</div></div>`;box.appendChild(div)})}
+
+/* ---- PLANS ---- */
+function renderPlans(){const box=document.getElementById('plansList');if(!box)return;box.innerHTML='';plans.forEach(pl=>{const div=document.createElement('div');div.className='plan-card '+(state.selectedPlan===pl.id?'selected':'');div.innerHTML=`<div class="row"><div><div class="plan-title">${pl.title}</div><div class="sub">${pl.premium?'Universo completo':'Acesso inicial'}</div></div><div class="plan-price">${pl.price}</div></div><div class="plan-list">${pl.items.map(i=>`<div>✅ ${i}</div>`).join('')}</div>`;div.onclick=()=>{state.selectedPlan=pl.id;save();renderPlans()};box.appendChild(div)});const btn=document.createElement('button');btn.className='btn dark';btn.style.marginTop='14px';btn.textContent='Pagar e desbloquear';btn.onclick=()=>{confetti();go('paymentSuccess')};box.appendChild(btn)}
+function unlockAndContinue(){state.unlocked=true;save();confetti();go('home')}
+</script>
+<script>
+/* ============ MOTOR DE JOGOS ============ */
+function startGame(game,from,themeKey,nodeIdx){state.currentGame={...game,theme:themeKey,nodeIdx:(nodeIdx===undefined?-1:nodeIdx)};if(from!=='home')state.lastScreen=from;state.combo=0;state.correctCount=state.correctCount||0;state.mythIndex=0;state.hangUsed=[];state.matchSel=null;state.matchDone=[];state.wordFound=[];state.wordSel='';state.builder={emotion:'',reminder:'',action:''};state.completeParts={};if(game.type==='sequence')state.seqItems=[...game.items].sort(()=>Math.random()-.5);if(game.type==='thermo'){state.thermo={};game.bars.forEach(b=>state.thermo[b]=5)}if(!state.questDone.q1){state.questDone.q1=true}save();go('gameplay')}
+function quitGame(){if(state.mode==='daily'){if(confirm('Sair da Lição Diária? Seu progresso de hoje será perdido.')){state.mode='free';go('home')}}else{go(state.lastScreen||'trail')}}
+
+function renderGameplay(){const game=state.currentGame,area=document.getElementById('gameplayArea');if(!game||!area)return;
+const c=categories[game.theme]||categories.comunicacao;
+document.getElementById('gameBadge').textContent=state.mode==='daily'?`🔥 Lição ${state.dailyIdx+1}/5`:`${c.icon} ${c.label}`;
+document.getElementById('gameTitle').textContent=game.title;document.getElementById('gameDesc').textContent=game.desc;
+document.getElementById('gameProgress').style.width=(state.mode==='daily'?((state.dailyIdx)/5)*100+10:40)+'%';
+document.getElementById('gameStep').textContent=`+${game.xp} XP • ${game.rarity}`;
+const renderers={myth:renderMyth,quiz:renderQuiz,match:renderMatch,sequence:renderSequence,thermo:renderThermo,cards:renderCards,simulation:renderSimulation,wordsearch:renderWordSearch,hangman:renderHangman,complete:renderComplete};area.innerHTML=renderers[game.type]?renderers[game.type](game):'<div class="panel">Game não encontrado.</div>';hydrateGame()}
+
+function renderMyth(g){const idx=state.mythIndex||0,item=g.data[idx];return `<div class="panel"><div class="chip">🌹 Mito ou verdade ${idx+1}/${g.data.length}</div><h3 class="brand" style="font-size:26px;line-height:1.04;margin-top:10px">${item.text}</h3><div class="truth-grid"><button class="truth-btn true" data-myth="true">Verdade</button><button class="truth-btn myth" data-myth="false">Mito</button></div><div class="feedback" id="gameFeedback"></div></div>`}
+function renderQuiz(g){return `<div class="panel"><div class="chip">⚡ Quiz terapêutico</div><h3 class="brand" style="font-size:26px;line-height:1.04;margin-top:10px">${g.question}</h3>${g.options.map((o,i)=>`<button class="option" data-quiz="${i}"><div class="visual">${o[2]}</div><div><div class="opt-title">${o[0]}</div><div class="opt-sub">Toque para responder</div></div></button>`).join('')}<div class="feedback" id="gameFeedback"></div></div>`}
+function renderMatch(g){let cards=[];g.pairs.forEach((p,i)=>{cards.push({txt:p[0],pair:i,type:'a'});cards.push({txt:p[1],pair:i,type:'b'})});cards=cards.sort(()=>Math.random()-.5);return `<div class="panel"><div class="chip">🔗 Ligar pares</div><h3 class="brand" style="font-size:26px;line-height:1.04;margin-top:10px">Una os pares corretos</h3><p class="sub">Selecione um item de cada lado com o mesmo significado.</p><div class="match-grid">${cards.map((c,i)=>`<button class="match-card ${state.matchSel===i?'sel':''} ${state.matchDone.includes(c.pair)?'done':''}" data-match="${i}" data-pair="${c.pair}" data-type="${c.type}">${c.txt}</button>`).join('')}</div><div class="feedback" id="gameFeedback"></div></div>`}
+function renderSequence(g){return `<div class="panel"><div class="chip">🧩 Lógica emocional</div><h3 class="brand" style="font-size:26px;line-height:1.04;margin-top:10px">Organize a sequência mais saudável</h3><div class="sequence-list">${state.seqItems.map((item,i)=>`<div class="seq-item"><span>${i+1}. ${item}</span><div class="seq-controls"><button data-up="${i}">↑</button><button data-down="${i}">↓</button></div></div>`).join('')}</div><button class="btn dark" id="seqCheck" style="margin-top:14px">Verificar sequência</button><div class="feedback" id="gameFeedback"></div></div>`}
+function renderThermo(g){return `<div class="panel"><div class="chip">🌡️ Termômetro</div><h3 class="brand" style="font-size:26px;line-height:1.04;margin-top:10px">Ajuste os níveis e veja a leitura</h3>${g.bars.map(b=>`<div class="thermo-row"><div class="thermo-top"><span>${b}</span><span id="val-${safe(b)}">${state.thermo[b]||5}/10</span></div><input type="range" min="0" max="10" value="${state.thermo[b]||5}" data-thermo="${b}"></div>`).join('')}<button class="btn dark" id="thermoFinish" style="margin-top:14px">Gerar leitura</button></div>`}
+function renderCards(){const options={emotion:['Ansiedade','Medo','Vergonha','Rejeição'],reminder:['Ansiedade não é previsão','Meu valor não depende da reação do outro','Eu posso pausar antes de agir','Desejo precisa de segurança'],action:['Respirar 2 minutos','Escrever e não enviar','Sair do celular','Falar com clareza depois']};return `<div class="panel"><div class="chip">🃏 Cartas</div><h3 class="brand" style="font-size:26px;line-height:1.04;margin-top:10px">Monte sua carta terapêutica</h3><div class="card-builder">${Object.entries(options).map(([k,list])=>`<div class="build-slot"><div class="slot-title">${labelFor(k)}</div><div class="choice-list">${list.map(v=>`<button class="choice-pill ${state.builder[k]===v?'selected':''}" data-build="${k}" data-value="${v}">${v}</button>`).join('')}</div></div>`).join('')}</div><button class="btn dark" id="cardsFinish" style="margin-top:14px">Fechar carta</button></div>`}
+function renderSimulation(g){return `<div class="panel"><div class="chip">💬 Simulação</div><h3 class="brand" style="font-size:24px;line-height:1.06;margin-top:10px">${g.situation}</h3><div class="dialogue-phone"><div class="bubble other">${g.situation}</div><div id="dialogueReply"></div></div>${g.options.map((o,i)=>`<button class="option" data-sim="${i}"><div class="visual">${o[2]}</div><div><div class="opt-title">${o[0]}</div><div class="opt-sub">Escolher resposta</div></div></button>`).join('')}<div class="feedback" id="gameFeedback"></div></div>`}
+function renderWordSearch(g){const board='VALORXXRESPEITOXCUIDADOXCORAGEMXXLUMEDAILYGAMEUNIVERSE'.replace(/[^A-Z]/g,'').slice(0,64).padEnd(64,'X');return `<div class="panel"><div class="chip">🔎 Caça-palavras</div><h3 class="brand" style="font-size:26px;line-height:1.04;margin-top:10px">Encontre palavras do valor próprio</h3><div class="word-grid">${board.split('').map((l,i)=>`<button class="letter ${state.wordSel.split(',').includes(String(i))?'sel':''}" data-letter="${i}">${l}</button>`).join('')}</div><div class="word-list">${g.words.map(w=>`<span class="word-pill ${state.wordFound.includes(w)?'done':''}">${w}</span>`).join('')}</div><div class="row" style="margin-top:14px"><button class="btn secondary small" id="wordClear">Limpar</button><button class="btn dark small" id="wordCheck" ${!state.wordSel?'disabled':''}>Confirmar palavra</button></div><div class="feedback" id="gameFeedback"></div></div>`}
+function renderHangman(g){const word=g.word,used=state.hangUsed||[],wrong=used.filter(l=>!word.includes(l)).length,display=word.split('').map(l=>used.includes(l)?l:'_').join(' '),letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');return `<div class="panel"><div class="chip">🪢 Forca terapêutica</div><h3 class="brand" style="font-size:24px;line-height:1.06;margin-top:10px">Dica: ${g.hint}</h3><div class="hang-emoji">${['🙂','😐','😟','😰','😵'][Math.min(wrong,4)]}</div><div class="hang-word">${display}</div><div class="hang-letters">${letters.map(l=>`<button class="hang-btn ${used.includes(l)?'used':''}" data-hang="${l}" ${used.includes(l)?'disabled':''}>${l}</button>`).join('')}</div><div class="feedback" id="gameFeedback"></div></div>`}
+function renderComplete(){const options={start:['Eu entendo o seu pedido, mas','Eu gosto de ajudar, e ainda assim','Para cuidar de mim agora,'],need:['preciso de tempo','preciso respeitar meu limite','não consigo fazer isso hoje'],end:['podemos falar depois.','posso ajudar de outro jeito.','agora eu preciso pausar.']};return `<div class="panel"><div class="chip">✍️ Montagem guiada</div><h3 class="brand" style="font-size:26px;line-height:1.04;margin-top:10px">Monte uma frase pronta</h3><div class="card-builder">${Object.entries(options).map(([k,list])=>`<div class="build-slot"><div class="slot-title">${k==='start'?'Início':k==='need'?'Necessidade':'Fechamento'}</div><div class="choice-list">${list.map(v=>`<button class="choice-pill ${state.completeParts[k]===v?'selected':''}" data-complete="${k}" data-value="${v}">${v}</button>`).join('')}</div></div>`).join('')}</div><button class="btn dark" id="completeFinish" style="margin-top:14px">Montar frase</button></div>`}
+function labelFor(k){return {emotion:'Emoção',reminder:'Lembrete',action:'Ação segura'}[k]||k} function safe(s){return s.replace(/\W/g,'')}
+
+/* registra acerto/erro p/ combo + vidas */
+function registerAnswer(ok){if(ok){state.combo=(state.combo||0)+1;state.correctCount=(state.correctCount||0)+1;if(state.correctCount>=3&&!state.questDone.q2){state.questDone.q2=true}if(state.combo>=2){comboFlash(`🔥 Combo x${state.combo}!`)}}else{state.combo=0;if(state.mode==='daily'){if(!spendHeart())return false}}save();return true}
+
+function hydrateGame(){const g=state.currentGame;if(!g)return;
+document.querySelectorAll('[data-myth]').forEach(btn=>btn.onclick=()=>{const item=g.data[state.mythIndex||0],answer=btn.dataset.myth==='true',ok=answer===item.answer;if(!registerAnswer(ok)&&!ok)return;showFeedback(ok,item.feedback,()=>{state.mythIndex++;if(state.mythIndex>=g.data.length){state.mythIndex=0;completeGame(g,ok?5:4,item.feedback)}else renderGameplay()})});
+document.querySelectorAll('[data-quiz]').forEach(btn=>btn.onclick=()=>{const o=g.options[Number(btn.dataset.quiz)],ok=o[1]==='good';if(!registerAnswer(ok)&&!ok)return;showFeedback(ok,o[3],()=>{if(ok)completeGame(g,5,o[3]);else renderGameplay()})});
+document.querySelectorAll('[data-sim]').forEach(btn=>btn.onclick=()=>{const o=g.options[Number(btn.dataset.sim)];document.getElementById('dialogueReply').innerHTML=`<div class="bubble me">${o[0]}</div>`;const ok=o[1]==='good';if(!registerAnswer(ok)&&!ok)return;showFeedback(ok,o[3],()=>{if(ok)completeGame(g,5,o[3]);else renderGameplay()})});
+document.querySelectorAll('[data-build]').forEach(btn=>btn.onclick=()=>{state.builder[btn.dataset.build]=btn.dataset.value;save();renderGameplay()});
+const cardsFinish=document.getElementById('cardsFinish');if(cardsFinish)cardsFinish.onclick=()=>{const chosen=Object.values(state.builder).filter(Boolean).length,insight=`Sua carta ficou assim: "Estou sentindo ${state.builder.emotion||'algo intenso'}. Vou lembrar que ${state.builder.reminder||'posso pausar'}. Minha ação segura será ${state.builder.action||'respirar'}."`;registerAnswer(true);completeGame(g,chosen>=3?5:3,insight)};
+document.querySelectorAll('[data-complete]').forEach(btn=>btn.onclick=()=>{state.completeParts[btn.dataset.complete]=btn.dataset.value;save();renderGameplay()});
+const completeFinish=document.getElementById('completeFinish');if(completeFinish)completeFinish.onclick=()=>{const p=state.completeParts,built=`"${p.start||'Eu entendo o seu pedido, mas'} ${p.need||'preciso de tempo'} ${p.end||'podemos falar depois.'}"`,filled=Object.values(p).filter(Boolean).length;registerAnswer(true);completeGame(g,filled>=3?5:3,`Frase montada: ${built}`)};
+document.querySelectorAll('[data-up]').forEach(btn=>btn.onclick=()=>{const i=Number(btn.dataset.up);if(i>0){[state.seqItems[i-1],state.seqItems[i]]=[state.seqItems[i],state.seqItems[i-1]];save();renderGameplay()}});
+document.querySelectorAll('[data-down]').forEach(btn=>btn.onclick=()=>{const i=Number(btn.dataset.down);if(i<state.seqItems.length-1){[state.seqItems[i+1],state.seqItems[i]]=[state.seqItems[i],state.seqItems[i+1]];save();renderGameplay()}});
+const seqCheck=document.getElementById('seqCheck');if(seqCheck)seqCheck.onclick=()=>{const ok=state.seqItems.join('|')===g.items.join('|');if(ok){registerAnswer(true);completeGame(g,5,g.feedback||'A ordem escolhida favorece regulação emocional.')}else{registerAnswer(false);showFeedback(false,'Essa sequência ainda pode ficar melhor. Tente colocar regulação antes de reação.',()=>renderGameplay())}};
+document.querySelectorAll('[data-thermo]').forEach(inp=>inp.oninput=e=>{state.thermo[e.target.dataset.thermo]=Number(e.target.value);document.getElementById('val-'+safe(e.target.dataset.thermo)).textContent=`${e.target.value}/10`;save()});
+const thermoFinish=document.getElementById('thermoFinish');if(thermoFinish)thermoFinish.onclick=()=>{registerAnswer(true);completeGame(g,5,thermoInsight())};
+document.querySelectorAll('[data-match]').forEach(btn=>btn.onclick=()=>{const i=Number(btn.dataset.match),pair=Number(btn.dataset.pair),type=btn.dataset.type;if(state.matchDone.includes(pair))return;if(state.matchSel===null){state.matchSel=i;save();renderGameplay();return}const first=document.querySelector(`[data-match="${state.matchSel}"]`);if(first&&Number(first.dataset.pair)===pair&&first.dataset.type!==type){state.matchDone.push(pair);state.matchSel=null;registerAnswer(true);save();if(state.matchDone.length>=g.pairs.length)completeGame(g,5,'Você associou conceitos e respostas de forma prática e visual.');else renderGameplay()}else{state.matchSel=null;registerAnswer(false);save();renderGameplay()}});
+document.querySelectorAll('[data-letter]').forEach(btn=>btn.onclick=()=>{const i=String(btn.dataset.letter),arr=state.wordSel?state.wordSel.split(','):[];if(arr.includes(i))return;arr.push(i);state.wordSel=arr.join(',');save();renderGameplay()});
+const wordClear=document.getElementById('wordClear');if(wordClear)wordClear.onclick=()=>{state.wordSel='';save();renderGameplay()};
+const wordCheck=document.getElementById('wordCheck');if(wordCheck)wordCheck.onclick=()=>{const letters=[...document.querySelectorAll('.letter')],word=(state.wordSel?state.wordSel.split(','):[]).map(i=>letters[Number(i)].textContent).join('');if(g.words.includes(word)&&!state.wordFound.includes(word)){state.wordFound.push(word);registerAnswer(true)}state.wordSel='';save();if(state.wordFound.length>=g.words.length)completeGame(g,5,'Você reforçou palavras-chave de valor próprio de forma leve e memorável.');else renderGameplay()};
+document.querySelectorAll('[data-hang]').forEach(btn=>btn.onclick=()=>{const l=btn.dataset.hang;if(!state.hangUsed.includes(l))state.hangUsed.push(l);save();const won=g.word.split('').every(ch=>state.hangUsed.includes(ch)),wrong=state.hangUsed.filter(x=>!g.word.includes(x)).length;if(won){registerAnswer(true);completeGame(g,5,'Descobrir conceitos aos poucos aumenta curiosidade e fixação do aprendizado.')}else if(wrong>=5){completeGame(g,3,'Mesmo errando algumas tentativas, você teve contato com um conceito central do tema.')}else renderGameplay()})}
+
+function thermoInsight(){const t=state.thermo;if((t['Pressão']||0)>6||(t['Cansaço']||0)>6)return 'A leitura sugere que pressão e cansaço podem estar ocupando o espaço do desejo. Antes de cobrar desejo, talvez o foco precise ser segurança, descanso e conexão.';return 'A leitura sugere que há boas condições emocionais para conexão: quanto menos pressão e mais segurança, mais leve o desejo pode se expressar.'}
+function showFeedback(ok,text,next){const f=document.getElementById('gameFeedback');if(!f)return;f.className='feedback show';f.style.background=ok?'#EFF9EA':'#FFF0F0';f.style.borderColor=ok?'#CDE8C2':'#F2C9C9';f.innerHTML=`<b>${ok?'✅ Boa escolha'+(state.combo>=2?` · combo x${state.combo} 🔥`:''):'⚠️ Vamos de novo'}</b><br>${text}<button class="btn dark small" style="margin-top:12px" id="fbNext">${next?'Continuar':'Tentar novamente'}</button>`;document.getElementById('fbNext').onclick=()=>{if(next)next();else renderGameplay()}}
+
+/* ============ CONCLUSÃO DE FASE ============ */
+function completeGame(game,stars,insight){const theme=game.theme;const bonus=Math.min(state.combo||0,5)*2;const xpGain=game.xp+bonus;
+state.stars+=stars;state.xp+=xpGain;state.gamesDone+=1;state.gems+=Math.round(game.xp/10);
+state.themeXP[theme]=(state.themeXP[theme]||0)+xpGain;state.themeStars[theme]=(state.themeStars[theme]||0)+stars;state.themeGamesDone[theme]=(state.themeGamesDone[theme]||0)+1;
+// progressão na trilha
+if(state.mode!=='daily'&&game.nodeIdx>=0){const cur=state.trailProgress[theme]||0;if(game.nodeIdx===cur){state.trailProgress[theme]=cur+1}state.nodeStars=state.nodeStars||{};state.nodeStars[theme+game.nodeIdx]=stars}
+const leveled=checkLevelUp();
+state.lastResult={title:game.title,stars,xp:xpGain,bonus,gems:Math.round(game.xp/10),insight,next:state.mode==='daily'?'__daily':(state.lastScreen||'trail'),leveled};
+save();
+if(state.mode==='daily'){state.dailyIdx++;state.dailyProgress=state.dailyIdx;save();showStarResult(true)}else{showStarResult(false)}}
+
+function showStarResult(isDaily){const r=state.lastResult;document.getElementById('starTitle').textContent=isDaily?`Desafio ${state.dailyIdx}/5 ✓`:r.title;document.getElementById('starIcons').innerHTML=[1,2,3,4,5].map(i=>`<span>${i<=r.stars?'⭐':'☆'}</span>`).join('');
+document.getElementById('starRewards').innerHTML=`<div class="rwd">⭐ +${r.xp} XP${r.bonus?` <span style="color:#FFE5AE;font-size:12px">(+${r.bonus} combo)</span>`:''}</div><div class="rwd">💎 +${r.gems}</div>`;
+document.getElementById('starText').textContent=isDaily?(state.dailyIdx>=5?'Último desafio! Finalize sua lição.':'Continue na sua lição de hoje!'):`Você concluiu a fase e fortaleceu seu progresso no tema ${categories[state.currentGame.theme].label}.`;
+document.getElementById('starInsight').textContent=r.insight||'Cada jogo reforça uma habilidade emocional diferente.';confetti();go('starResult')}
+function finishStarContinue(){const r=state.lastResult;if(r.leveled){showLevelUp();return}if(r.next==='__daily'){loadNextDaily();return}go(r.next||'trail')}
+
+/* ============ LEVEL UP ============ */
+function showLevelUp(){document.getElementById('luNum').textContent=state.level;document.getElementById('luName').textContent=`Nível ${state.level} · ${LEVEL_NAMES[state.level-1]||'Lenda'}`;confetti();go('levelUp')}
+function afterLevelUp(){const r=state.lastResult;if(r.next==='__daily'){loadNextDaily();return}go(r.next||'trail')}
+
+/* ============ BAÚ ============ */
+function resetChest(){const big=document.getElementById('chestBig');big.classList.remove('open');big.textContent='🎁';document.getElementById('chestTitle').textContent='Toque para abrir!';document.getElementById('chestLoot').style.display='none';document.getElementById('chestRays').classList.remove('show')}
+function popChest(){const big=document.getElementById('chestBig');if(big.classList.contains('open'))return;big.classList.add('open');big.textContent='💝';document.getElementById('chestRays').classList.add('show');document.getElementById('chestTitle').textContent='Você ganhou!';
+const c=state.pendingChest||{gems:20,xp:30,gemsLabel:'+20 gemas',item:'Recompensa'};state.gems+=c.gems;state.xp+=c.xp;const leveled=checkLevelUp();state.lastResult={...state.lastResult,leveled,next:'home'};
+document.getElementById('chestRewards').innerHTML=`<div class="rwd">💎 ${c.gemsLabel}</div><div class="rwd">⭐ +${c.xp} XP</div><div class="rwd">🎴 ${c.item}</div>`;
+setTimeout(()=>{document.getElementById('chestLoot').style.display='flex';confetti()},500);save()}
+function afterChest(){state.pendingChest=null;state.mode='free';save();if(state.lastResult.leveled){showLevelUp();return}go('home')}
+
+/* ============ CONFETTI ============ */
+function confetti(){const layer=document.getElementById('cfLayer');if(!layer)return;layer.innerHTML='';const colors=['#FFBE55','#FFE3A3','#7B1B2A','#74B56C','#F38CAB','#fff'];for(let i=0;i<72;i++){const c=document.createElement('div');c.className='cf';c.style.left=Math.random()*100+'%';c.style.top='-10px';c.style.width=6+Math.random()*8+'px';c.style.height=8+Math.random()*12+'px';c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.animationDuration=1.8+Math.random()*1.8+'s';c.style.animationDelay=Math.random()*.24+'s';layer.appendChild(c)}setTimeout(()=>layer.innerHTML='',3600)}
+
+/* ============ BOOT ============ */
+setAuthTab(state.authTab||'login');
+if(state.screen==='splash'){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('splash').classList.add('active');document.getElementById('mainNav').classList.add('hidden');render();bootSplash()}
+else{go(state.screen||'splash')}
+</script>
+<script>
+  // Registro do Service Worker (PWA offline)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function (err) {
+        console.log('SW falhou:', err);
+      });
+    });
+  }
+</script>
+</body>
+</html>

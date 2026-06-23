@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lume Daily — Offline</title>
+<style>
+  html,body{margin:0;height:100%;font-family:system-ui,sans-serif;color:#fff;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    background:radial-gradient(ellipse at 50% 0%,#560E1A 0%,#180910 58%,#0D0407 100%)}
+  .wrap{padding:30px;max-width:340px}
+  .flame{font-size:72px;animation:p 1.6s ease-in-out infinite}
+  @keyframes p{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+  h1{font-size:26px;margin:14px 0 6px;color:#FFBE55}
+  p{color:rgba(255,255,255,.78);line-height:1.5;font-size:15px}
+  button{margin-top:22px;border:none;border-radius:16px;padding:15px 26px;font-weight:800;
+    background:linear-gradient(180deg,#FFD376,#FFB23E);color:#5F320D;font-size:15px;cursor:pointer}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="flame">🔥</div>
+    <h1>Você está offline</h1>
+    <p>Sem conexão agora. Suas conquistas estão salvas no aparelho — reconecte para continuar sua jornada.</p>
+    <button onclick="location.href='./index.html'">Tentar de novo</button>
+  </div>
+</body>
+</html>
